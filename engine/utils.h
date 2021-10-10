@@ -1,0 +1,2 @@
+#define TILESET_DIMENSION 16
+#define SCALE_FACTOR 4.0f
