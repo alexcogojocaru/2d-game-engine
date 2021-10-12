@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-   /* sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Window");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML Window");
     window.setFramerateLimit(60);
 
     b2Vec2 gravity(0.0f, 55.0f);
@@ -25,7 +25,15 @@ int main()
     groundBody->CreateFixture(&groundBox, 0.0f);
 
     sf::Texture texture;
-    if (!texture.loadFromFile("D:/2d-game-engine/tileset.png"))
+    std::string texturePath;
+
+#ifdef __linux__
+    texturePath = "/home/alex/Desktop/2d-game-engine/tileset.png";
+#else
+    texturePath = "D:/2d-game-engine/tileset.png";
+#endif
+
+    if (!texture.loadFromFile(texturePath))
     {
         std::cout << "erroor" << std::endl;
     }
@@ -77,7 +85,7 @@ int main()
         }
 
         window.display();
-    }*/
+    }
 
     return 0;
 }
