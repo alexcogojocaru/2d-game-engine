@@ -2,9 +2,12 @@
 
 #include <SFML/Graphics.hpp>
 #include <box2d/box2d.h>
+#include <input/keyboard_input.h>
 
 #define TILESET_DIMENSION 16
 #define SCALE_FACTOR 4
+
+namespace e_input = engine::input;
 
 namespace engine
 {
@@ -12,11 +15,13 @@ namespace engine
     {
     private:
         sf::Sprite* m_sprite;
+        b2Body* body;
 
     public:
         Entity(const sf::Vector2f position, sf::Vector2f texturePos, b2World& world, const sf::Texture& texture);
         ~Entity();
 
+        void update();
         void draw(sf::RenderWindow& window, const b2Body* bodyInfo);
     };
 }

@@ -9,7 +9,7 @@ namespace engine
         bodyDefinition.type = b2_dynamicBody;
         bodyDefinition.position.Set(position.x, position.y);
 
-        b2Body* body;
+        // b2Body* body;
         body = world.CreateBody(&bodyDefinition);
 
         b2PolygonShape dynamicBox;
@@ -19,7 +19,7 @@ namespace engine
         fixtureDefinition.shape = &dynamicBox;
         fixtureDefinition.density = 100.0f;
         fixtureDefinition.friction = 0.0f;
-        fixtureDefinition.restitution = 0.2;
+        fixtureDefinition.restitution = 0.9;
 
         body->CreateFixture(&fixtureDefinition);
 
@@ -32,6 +32,12 @@ namespace engine
     Entity::~Entity()
     {
         delete m_sprite;
+    }
+
+    void Entity::update()
+    {
+        e_input::_directions move = e_input::KeyboardInput::handleInput();
+        printf("movement: {%d, %d}\n", move.x_, move.y_);
     }
 
     void Entity::draw(sf::RenderWindow& window, const b2Body* bodyInfo)

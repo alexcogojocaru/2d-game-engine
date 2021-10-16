@@ -1,3 +1,11 @@
 .vs/
+.vscode/
 CMakeSettings.*
 out/
+Makefile
+*.cmake
+CMakeCache.*
+CMakeFiles/
+*.a
+build/
+engine/engine
