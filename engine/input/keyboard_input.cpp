@@ -19,11 +19,11 @@ namespace engine
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
             {
-                characterMovement.y_ = 1;
+                characterMovement.y_ = -1;
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
             {
-                characterMovement.y_ = -1;
+                characterMovement.y_ = 1;
             }
 
             return characterMovement;
