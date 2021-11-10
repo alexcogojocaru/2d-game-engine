@@ -24,7 +24,9 @@ namespace engine
 
 			void setScale(sf::Vector2f& scale) { m_sprite->setScale(scale); }
 			void setScale(sf::Vector2f&& scale) { m_sprite->setScale(scale); }
+
 			void setPosition(sf::Vector2f& pos) { m_sprite->setPosition(pos); }
+			void setPosition(sf::Vector2f&& pos) { m_sprite->setPosition(pos); }
 
 			void draw(sf::RenderWindow& window) override;
 		};

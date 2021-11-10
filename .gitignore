@@ -10,3 +10,5 @@ CMakeFiles/
 build/
 engine/engine
 *.png
+demo
+*.ttf

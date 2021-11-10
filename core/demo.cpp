@@ -1,7 +1,7 @@
 #include <iostream>
 #include <ui/ui.h>
 #include <logging/log.h>
-#include "entity.h"
+#include <entity/player.h>
 
 using namespace std;
 
@@ -28,13 +28,16 @@ int main()
     sf::Texture texture;
     std::string texturePath;
     std::string iconsPath;
+    std::string healthIconsPath;
 
 #ifdef __linux__
     texturePath = "/home/alex/Desktop/2d-game-engine/tileset.png";
     iconsPath = "/home/alex/Desktop/2d-game-engine/UI_Font_A.png";
+    healthIconsPath = "/home/alex/Desktop/2d-game-engine/HeartSprites.png";
 #else
     texturePath = "tileset.png";
     iconsPath = "UI_Font_A.png";
+    healthIconsPath = "HeartSprites.png";
 #endif
 
     if (!texture.loadFromFile(texturePath))
@@ -43,7 +46,9 @@ int main()
     }
     std::cout << sf::Joystick::getButtonCount(0) << std::endl;
 
-    engine::Entity entity(sf::Vector2f(0, 0), sf::Vector2f(8, 5), world, texture);
+    // engine::Entity entity(sf::Vector2f(0, 0), sf::Vector2f(8, 5), world, texture);
+    sf::Vector2f texturePos = sf::Vector2f(8, 5);
+    core::Player player(world, texturePos, texture);
 
     float timeStep = 1.0f / 60.0f;
     int32 velocityIterations = 6;
@@ -71,6 +76,28 @@ int main()
     icon.setScale(sf::Vector2f(2, 2));
     icon.setPosition(positionIcon);
 
+    // texture loading for hearts and mana
+    sf::Texture healthTexture;
+    if (!healthTexture.loadFromFile(healthIconsPath))
+    {
+        std::cout << "health texture error" << std::endl;
+    }
+    
+    sf::Vector2f heartPos = sf::Vector2f(0, 0);
+    sf::Vector2f heartPosition = sf::Vector2f(0, 0);
+
+    engine::ui::Icon heartIcon1(healthTexture, heartPos, 16, 16, 16);
+    heartIcon1.setScale(sf::Vector2f(4, 4));
+    heartIcon1.setPosition(sf::Vector2f(0, 0));
+
+    engine::ui::Icon heartIcon2(healthTexture, heartPos, 16, 16, 16);
+    heartIcon2.setScale(sf::Vector2f(4, 4));
+    heartIcon2.setPosition(sf::Vector2f(16, 0));
+
+    engine::ui::Icon heartIcon3(healthTexture, heartPos, 16, 16, 16);
+    heartIcon3.setScale(sf::Vector2f(4, 4));
+    heartIcon3.setPosition(sf::Vector2f(32, 0));
+
     while (window.isOpen())
     {
         sf::Event _event;
@@ -94,7 +121,7 @@ int main()
         {
             if (bodyIterator->GetType() == b2_dynamicBody)
             {
-                entity.draw(window);
+                player.draw(window);
             }
             else
             {
@@ -111,6 +138,9 @@ int main()
         }
 
         icon.draw(window);
+        heartIcon1.draw(window);
+        heartIcon2.draw(window);
+        heartIcon3.draw(window);
         window.display();
     }
 

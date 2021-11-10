@@ -4,7 +4,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#define PACIFICO_FONT_PATH "fonts/sketch_gothic.ttf"
+#define PACIFICO_FONT_PATH "/home/alex/Desktop/2d-game-engine/sketch_gothic.ttf"
 #define TRANSPARENCY_THRESHOLD 0x0
 
 #define ICON_DIMENSION 32
