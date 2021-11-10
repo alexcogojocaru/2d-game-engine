@@ -9,3 +9,4 @@ CMakeFiles/
 *.a
 build/
 engine/engine
+*.png

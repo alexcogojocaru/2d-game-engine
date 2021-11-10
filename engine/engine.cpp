@@ -3,11 +3,6 @@
 #include <logging/log.h>
 #include "entity.h"
 
-#define XBOX_CONTROLLER_A_BUTTON 0x0
-#define XBOX_CONTROLLER_B_BUTTON 0x1
-#define XBOX_CONTROLLER_X_BUTTON 0x2
-#define XBOX_CONTROLLER_Y_BUTTON 0x3
-
 using namespace std;
 
 int main()
@@ -32,11 +27,14 @@ int main()
 
     sf::Texture texture;
     std::string texturePath;
+    std::string iconsPath;
 
 #ifdef __linux__
     texturePath = "/home/alex/Desktop/2d-game-engine/tileset.png";
+    iconsPath = "/home/alex/Desktop/2d-game-engine/UI_Font_A.png";
 #else
     texturePath = "tileset.png";
+    iconsPath = "UI_Font_A.png";
 #endif
 
     if (!texture.loadFromFile(texturePath))
@@ -60,18 +58,18 @@ int main()
 
     sf::Texture iconTexture;
 
-    if (!iconTexture.loadFromFile("UI_Font_A.png"))
+    if (!iconTexture.loadFromFile(iconsPath))
     {
         std::cout << "erroor" << std::endl;
     }
 
-    /*sf::IntRect rect(32, 0, 32, 32);
-    sf::Sprite iconSprite(iconTexture, rect);
-    iconSprite.setScale(2, 2);*/
+    sf::Vector2f iconPos = sf::Vector2f(1, 0);
+    sf::Vector2f scaleIcon = sf::Vector2f(2, 2);
+    sf::Vector2f positionIcon = sf::Vector2f(100, 100);
 
-    engine::ui::Icon icon(iconTexture, engine::ui::IconUtils::ICON_NINE);
+    engine::ui::Icon icon(iconTexture, iconPos);
     icon.setScale(sf::Vector2f(2, 2));
-    icon.setPosition(sf::Vector2f(100, 100));
+    icon.setPosition(positionIcon);
 
     while (window.isOpen())
     {
