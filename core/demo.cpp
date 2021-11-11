@@ -2,8 +2,11 @@
 #include <ui/ui.h>
 #include <logging/log.h>
 #include <entity/player.h>
+#include <gameui/healthbar.h>
+#include <resources_pool/texture_manager.h>
 
 using namespace std;
+using namespace engine::resources;
 
 int main()
 {
@@ -25,7 +28,6 @@ int main()
 
     groundBody->CreateFixture(&groundBox, 0.0f);
 
-    sf::Texture texture;
     std::string texturePath;
     std::string iconsPath;
     std::string healthIconsPath;
@@ -40,63 +42,29 @@ int main()
     healthIconsPath = "HeartSprites.png";
 #endif
 
-    if (!texture.loadFromFile(texturePath))
-    {
-        std::cout << "erroor" << std::endl;
-    }
-    std::cout << sf::Joystick::getButtonCount(0) << std::endl;
+    std::map<std::string, std::string> textures = { {"healthIcons", healthIconsPath}, {"icons", iconsPath}, {"texture", texturePath} };
+    std::shared_ptr<TextureManager> textureManager = TextureManager::getInstance(textures);
 
-    // engine::Entity entity(sf::Vector2f(0, 0), sf::Vector2f(8, 5), world, texture);
     sf::Vector2f texturePos = sf::Vector2f(8, 5);
+    const sf::Texture& texture = textureManager->getTexture("texture");
     core::Player player(world, texturePos, texture);
 
     float timeStep = 1.0f / 60.0f;
     int32 velocityIterations = 6;
     int32 positionIterations = 2;
 
-    sf::Font font;
-
-    if (!font.loadFromFile(PACIFICO_FONT_PATH))
-    {
-        std::cout << "could not load the font from the file" << std::endl;
-    }
-
-    sf::Texture iconTexture;
-
-    if (!iconTexture.loadFromFile(iconsPath))
-    {
-        std::cout << "erroor" << std::endl;
-    }
-
     sf::Vector2f iconPos = sf::Vector2f(1, 0);
     sf::Vector2f scaleIcon = sf::Vector2f(2, 2);
     sf::Vector2f positionIcon = sf::Vector2f(100, 100);
 
+    const sf::Texture& iconTexture = textureManager->getTexture("icons");
     engine::ui::Icon icon(iconTexture, iconPos);
-    icon.setScale(sf::Vector2f(2, 2));
+    icon.setScaleFactor(2.0f);
     icon.setPosition(positionIcon);
 
-    // texture loading for hearts and mana
-    sf::Texture healthTexture;
-    if (!healthTexture.loadFromFile(healthIconsPath))
-    {
-        std::cout << "health texture error" << std::endl;
-    }
-    
-    sf::Vector2f heartPos = sf::Vector2f(0, 0);
-    sf::Vector2f heartPosition = sf::Vector2f(0, 0);
+    const sf::Texture& healthTexture = textureManager->getTexture("healthIcons");
 
-    engine::ui::Icon heartIcon1(healthTexture, heartPos, 16, 16, 16);
-    heartIcon1.setScale(sf::Vector2f(4, 4));
-    heartIcon1.setPosition(sf::Vector2f(0, 0));
-
-    engine::ui::Icon heartIcon2(healthTexture, heartPos, 16, 16, 16);
-    heartIcon2.setScale(sf::Vector2f(4, 4));
-    heartIcon2.setPosition(sf::Vector2f(16, 0));
-
-    engine::ui::Icon heartIcon3(healthTexture, heartPos, 16, 16, 16);
-    heartIcon3.setScale(sf::Vector2f(4, 4));
-    heartIcon3.setPosition(sf::Vector2f(32, 0));
+    std::shared_ptr<core::HealthBar> healthBar = core::HealthBar::getInstance(healthTexture, 100.0f, 4);
 
     while (window.isOpen())
     {
@@ -137,10 +105,7 @@ int main()
             }
         }
 
-        icon.draw(window);
-        heartIcon1.draw(window);
-        heartIcon2.draw(window);
-        heartIcon3.draw(window);
+        healthBar->draw(window);
         window.display();
     }
 

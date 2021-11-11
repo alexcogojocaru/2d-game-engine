@@ -6,7 +6,7 @@
 #include "properties.h"
 
 #define TILESET_DIMENSION 16
-#define MOVE_SPEED 50
+#define MOVE_SPEED 75
 #define SCALE_FACTOR 4
 
 namespace core
