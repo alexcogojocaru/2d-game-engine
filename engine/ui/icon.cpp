@@ -24,6 +24,11 @@ namespace engine
 		{
 		}
 
+		Icon::Icon(const sf::Texture& texture, const sf::Vector2f& pos, int8_t width, int8_t height, int8_t tiledimension, float scaleFactor)
+			: Icon(texture, pos.x, pos.y, width, height, tiledimension, scaleFactor)
+		{
+		}
+
 		Icon::~Icon()
 		{
 			

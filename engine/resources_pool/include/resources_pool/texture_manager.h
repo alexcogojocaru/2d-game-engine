@@ -9,7 +9,20 @@ namespace engine
 {
 	namespace resources
 	{
-		class TextureManager
+		/// <summary>
+		/// Interface for texture manager
+		///  
+		///		addTexture - loads a new texture in memory and adds it in the pool
+		///		getTexture - returns a loaded texture that matches the provided key	
+		/// </summary>
+		class AbstractTextureManager
+		{
+		public:
+			virtual void addTexture(std::string, std::string) = 0;
+			virtual const sf::Texture& getTexture(std::string) = 0;
+		};
+
+		class TextureManager : public AbstractTextureManager
 		{
 		private:
 			static std::shared_ptr<TextureManager> s_instance;

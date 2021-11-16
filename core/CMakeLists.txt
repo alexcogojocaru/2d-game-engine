@@ -2,10 +2,12 @@ cmake_minimum_required (VERSION 3.8)
 
 add_subdirectory(entity)
 add_subdirectory(ui)
+add_subdirectory(map)
 
 add_executable (
 	demo
-	"demo.cpp")
+	"demo.cpp"
+)
 
 if (WIN32)
 	target_link_libraries (demo box2d-lib 
@@ -15,6 +17,7 @@ if (WIN32)
 		entity-lib 
 		gameui-lib
 		resources-pool-lib
+		map-lib
 	)
 
 	target_link_libraries (demo 
