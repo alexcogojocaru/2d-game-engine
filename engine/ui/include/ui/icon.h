@@ -30,6 +30,12 @@ namespace engine
 
 			void setScaleFactor(const float& scale);
 			void setPosition(const sf::Vector2f& pos);
+			void setPosition(float x, float y);
+
+			sf::Vector2f getPosition()	const { return m_sprite->getPosition(); }
+			float get_x_axis()			const { return m_sprite->getPosition().x; }
+			float get_y_axis()			const { return m_sprite->getPosition().y; }
+
 			float getScaleFactor() const { return m_scaleFactor; }
 
 			void draw(sf::RenderWindow& window) override;

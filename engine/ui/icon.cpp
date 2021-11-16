@@ -48,6 +48,12 @@ namespace engine
 			m_outline.setPosition(pos);
 		}
 
+		void Icon::setPosition(float x, float y)
+		{
+			m_sprite->setPosition(x, y);
+			m_outline.setPosition(x, y);
+		}
+
 		void Icon::draw(sf::RenderWindow& window)
 		{
 			window.draw(*m_sprite);

@@ -40,5 +40,10 @@ namespace engine
 
 			return s_instance;
 		}
+
+		std::shared_ptr<TextureManager> TextureManager::getInstance()
+		{
+			return s_instance;
+		}
 	}
 }

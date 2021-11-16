@@ -33,7 +33,9 @@ namespace engine
 
 			void addTexture(std::string textureName, std::string texturePath);
 			const sf::Texture& getTexture(std::string key);
+
 			static std::shared_ptr<TextureManager> getInstance(std::map<std::string, std::string> texturePaths);
+			static std::shared_ptr<TextureManager> getInstance();
 		};
 	}
 }

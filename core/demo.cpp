@@ -4,8 +4,9 @@
 #include <entity/player.h>
 #include <gameui/healthbar.h>
 #include <resources_pool/texture_manager.h>
-#include <gameui/icon_properties.h>
+#include <gameui/gameui.h>
 #include <gamemap/tile.h>
+#include <state/menu_state.h>
 
 using namespace std;
 using namespace engine::resources;
@@ -92,6 +93,11 @@ int main()
 
     bool isPressed = false;
 
+    std::vector<sf::Vector2f> letters = { constants::LETTER_CAPITAL_P, constants::LETTER_CAPITAL_L, constants::LETTER_CAPITAL_A, constants::LETTER_CAPITAL_Y };
+    Word word(letters, sf::Vector2f(100, 100), iconTexture);
+
+    MenuState menuState(800, 600);
+
     while (window.isOpen())
     {
         sf::Event _event;
@@ -143,7 +149,7 @@ int main()
         world.Step(timeStep, velocityIterations, positionIterations);
         window.clear();
 
-        for (b2Body* bodyIterator = world.GetBodyList(); bodyIterator != 0; bodyIterator = bodyIterator->GetNext())
+        /*for (b2Body* bodyIterator = world.GetBodyList(); bodyIterator != 0; bodyIterator = bodyIterator->GetNext())
         {
             if (bodyIterator->GetType() == b2_dynamicBody)
             {
@@ -163,12 +169,10 @@ int main()
             }
         }
 
-        icon0.draw(window);
-        icon1.draw(window);
-        icon2.draw(window);
-        icon3.draw(window);
+        word.draw(window);
         tile.draw(window);
-        healthBar->draw(window);
+        healthBar->draw(window);*/
+        menuState.draw(window);
         window.display();
     }
 
