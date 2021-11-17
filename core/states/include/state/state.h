@@ -13,14 +13,16 @@ namespace core
 	class State
 	{
 	protected:
+		std::shared_ptr<TextureManager> textureManager;
 		std::vector<Word> m_words;
 		uint32_t screenWidth;
 		uint32_t screenHeight;
+		sf::RenderWindow& window;
 
 	public:
-		State(uint32_t width, uint32_t height);
+		State(sf::RenderWindow& window, uint32_t width, uint32_t height);
 		
 		virtual void update() = 0;
-		virtual void draw(sf::RenderWindow& window) = 0;
+		virtual void draw() = 0;
 	};
 }

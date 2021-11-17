@@ -17,6 +17,7 @@ namespace core
 
 		public:
 			Tile(b2World& world, uint32_t width, uint32_t height, b2Vec2& pos);
+			Tile(b2World& world, uint32_t width, uint32_t height, b2Vec2&& pos);
 
 			void draw(sf::RenderWindow& window);
 		};

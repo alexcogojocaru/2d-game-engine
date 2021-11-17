@@ -13,6 +13,11 @@ namespace core
 
         stats = { 100.0f, 10.0f };
         printf("created entity\n");
+
+        m_outline = sf::RectangleShape(sf::Vector2f(16.0f * SCALE_FACTOR, 16.0f * SCALE_FACTOR));
+		m_outline.setFillColor(sf::Color(0, 0, 0, 0));
+		m_outline.setOutlineColor(sf::Color::Red);
+		m_outline.setOutlineThickness(1);
     }
 
     Entity::~Entity()
@@ -24,6 +29,7 @@ namespace core
     {
         b2BodyDef bodyDefinition;
         bodyDefinition.type = b2_dynamicBody;
+        bodyDefinition.position.Set(400, 400);
         m_body = world.CreateBody(&bodyDefinition);
 
         b2PolygonShape dynamicBox;

@@ -2,9 +2,10 @@
 
 namespace core
 {
-	MenuState::MenuState(uint32_t width, uint32_t height) : State(width, height)
+	MenuState::MenuState(sf::RenderWindow& window, uint32_t width, uint32_t height) 
+		: State(window, width, height)
 	{
-		std::shared_ptr<TextureManager> textureManager = TextureManager::getInstance();
+		// std::shared_ptr<TextureManager> textureManager = TextureManager::getInstance();
 		std::vector<sf::Vector2f> letters = { constants::LETTER_CAPITAL_P, constants::LETTER_CAPITAL_L, constants::LETTER_CAPITAL_A, constants::LETTER_CAPITAL_Y };
 		
 		const sf::Texture& texture = textureManager->getTexture("icons");
@@ -47,7 +48,7 @@ namespace core
 
 	}
 
-	void MenuState::draw(sf::RenderWindow& window)
+	void MenuState::draw()
 	{
 		for (auto& word : m_words)
 		{

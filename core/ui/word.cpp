@@ -28,6 +28,12 @@ namespace core
 		m_length = m_letters.size();
 	}
 
+	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f&& startPos, const sf::Texture& texture)
+		: Word(letterCodes, startPos, texture)
+	{
+
+	}
+
 	void Word::update(bool move)
 	{
 

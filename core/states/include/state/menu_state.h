@@ -5,9 +5,9 @@ namespace core
 	class MenuState : public State
 	{
 	public:
-		MenuState(uint32_t width, uint32_t height);
+		MenuState(sf::RenderWindow& window, uint32_t width, uint32_t height);
 
 		void update() override;
-		void draw(sf::RenderWindow& window) override;
+		void draw() override;
 	};
 }

@@ -20,6 +20,7 @@ namespace core
 	public:
 		Word();
 		Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture);
+		Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f&& startPos, const sf::Texture& texture);
 
 		void update(bool move);
 		void draw(sf::RenderWindow& window);

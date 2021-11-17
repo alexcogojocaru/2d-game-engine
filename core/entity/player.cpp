@@ -26,6 +26,14 @@ namespace core
         update();
 
         m_sprite.setPosition(m_body->GetPosition().x, m_body->GetPosition().y);
+        m_outline.setPosition(m_body->GetPosition().x, m_body->GetPosition().y);
+        
+        float x = m_outline.getPosition().x;
+        float y = m_outline.getPosition().y;
+
+        printf("%f %f %f %f\n", x, y, x + 64, y + 64);
+
         window.draw(m_sprite);
+        window.draw(m_outline);
     }
 }

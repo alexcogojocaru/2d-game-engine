@@ -2,9 +2,9 @@
 
 namespace core
 {
-	State::State(uint32_t width, uint32_t height)
-		: screenWidth(width), screenHeight(height)
+	State::State(sf::RenderWindow& window, uint32_t width, uint32_t height)
+		: screenWidth(width), screenHeight(height), window(window)
 	{
-
+		textureManager = TextureManager::getInstance();
 	}
 }

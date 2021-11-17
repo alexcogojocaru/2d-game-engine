@@ -6,7 +6,7 @@
 #include "properties.h"
 
 #define TILESET_DIMENSION 16
-#define MOVE_SPEED 75
+#define MOVE_SPEED 300
 #define SCALE_FACTOR 4
 
 namespace core
@@ -15,6 +15,7 @@ namespace core
     {
     protected:
         sf::Sprite m_sprite;
+        sf::RectangleShape m_outline;
         sf::Vector2f m_texturePos;
         b2Body* m_body;
         entity_stats stats;
