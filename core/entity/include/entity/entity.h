@@ -3,11 +3,15 @@
 #include <SFML/Graphics.hpp>
 #include <box2d/box2d.h>
 #include <memory>
+#include <gameui/gameui.h>
+#include <resources_pool/texture_manager.h>
 #include "properties.h"
 
 #define TILESET_DIMENSION 16
-#define MOVE_SPEED 300
+#define MOVE_SPEED 100
 #define SCALE_FACTOR 4
+
+using namespace engine::resources;
 
 namespace core
 {
@@ -19,6 +23,9 @@ namespace core
         sf::Vector2f m_texturePos;
         b2Body* m_body;
         entity_stats stats;
+        Word m_healthIndicator;
+        std::shared_ptr<TextureManager> textureManager;
+        sf::Clock* m_clock;
 
     private:
         void createBody(b2World& world);
@@ -29,6 +36,7 @@ namespace core
 
         void setPosition(const sf::Vector2f&& pos);
         void setPosition(const sf::Vector2f& pos);
+        void setClock(sf::Clock* clock) { m_clock = clock; }
 
         virtual void update() = 0;
         virtual void draw(sf::RenderWindow& window) = 0;

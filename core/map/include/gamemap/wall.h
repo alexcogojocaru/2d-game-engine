@@ -8,7 +8,7 @@ namespace core
 {
 	namespace map
 	{
-		class Tile
+		class Wall
 		{
 		private:
 			static const uint32_t TILE_DIMENSION;
@@ -16,8 +16,9 @@ namespace core
 			b2Body* m_body;
 
 		public:
-			Tile(b2World& world, uint32_t width, uint32_t height, b2Vec2& pos);
-			Tile(b2World& world, uint32_t width, uint32_t height, b2Vec2&& pos);
+			Wall();
+			Wall(b2World& world, uint32_t width, uint32_t height, b2Vec2& pos);
+			Wall(b2World& world, uint32_t width, uint32_t height, b2Vec2&& pos);
 
 			void draw(sf::RenderWindow& window);
 		};

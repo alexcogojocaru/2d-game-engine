@@ -20,6 +20,7 @@ if (WIN32)
 		resources-pool-lib
 		map-lib
 		states-lib
+		Candle-s
 	)
 
 	target_link_libraries (demo 

@@ -10,7 +10,7 @@ namespace core
 
 	}
 
-	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture)
+	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture, float scale_factor)
 		: m_position(startPos)
 	{
 		float xPosition = startPos.x;
@@ -20,6 +20,7 @@ namespace core
 		{
 			ui::Icon icon(texture, code);
 			icon.setPosition(xPosition, yPosition);
+			//icon.setScaleFactor(scale_factor);
 			m_letters.push_back(icon);
 
 			xPosition += CHARACTER_SPACING;
@@ -28,7 +29,7 @@ namespace core
 		m_length = m_letters.size();
 	}
 
-	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f&& startPos, const sf::Texture& texture)
+	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f&& startPos, const sf::Texture& texture, float scale_factor)
 		: Word(letterCodes, startPos, texture)
 	{
 

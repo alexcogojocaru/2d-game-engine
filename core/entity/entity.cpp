@@ -4,6 +4,8 @@ namespace core
 {
     Entity::Entity(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture)
     {
+        textureManager = TextureManager::getInstance();
+
         createBody(world);
 
         sf::IntRect textureRect(8 * TILESET_DIMENSION, 5 * TILESET_DIMENSION, TILESET_DIMENSION, TILESET_DIMENSION);
@@ -18,6 +20,11 @@ namespace core
 		m_outline.setFillColor(sf::Color(0, 0, 0, 0));
 		m_outline.setOutlineColor(sf::Color::Red);
 		m_outline.setOutlineThickness(1);
+
+        /*std::vector<sf::Vector2f> health = { constants::ICON_NUMBER_ONE, constants::ICON_NUMBER_ZERO, constants::ICON_NUMBER_ZERO };
+
+        const sf::Texture& textureIcon = textureManager->getTexture("icons");
+        m_healthIndicator = Word(health, sf::Vector2f(400, 300), textureIcon);*/
     }
 
     Entity::~Entity()

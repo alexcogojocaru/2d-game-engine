@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "include/gamemap/tile.h"
+#include "include/gamemap/wall.h"
 
 #define SCALE_FACTOR 4
 #define DIMENSION 32
@@ -8,10 +8,18 @@ namespace core
 {
 	namespace map
 	{
-		const uint32_t Tile::TILE_DIMENSION = 16;
+		const uint32_t Wall::TILE_DIMENSION = 16;
 	
-		Tile::Tile(b2World& world, uint32_t width, uint32_t height, b2Vec2& pos)
+		Wall::Wall()
 		{
+
+		}
+
+		Wall::Wall(b2World& world, uint32_t width, uint32_t height, b2Vec2& pos)
+		{
+			width  *= 32;
+			height *= 32;
+
 			uint32_t width_minimum_factor = (width / DIMENSION - 1) * DIMENSION;
 			uint32_t height_minimum_factor = (height / DIMENSION - 1) * DIMENSION;
 
@@ -33,13 +41,13 @@ namespace core
 			// m_outline.setScale(SCALE_FACTOR, SCALE_FACTOR);
 		}
 
-		Tile::Tile(b2World& world, uint32_t width, uint32_t height, b2Vec2&& pos)
-			: Tile(world, width, height, pos)
+		Wall::Wall(b2World& world, uint32_t width, uint32_t height, b2Vec2&& pos)
+			: Wall(world, width, height, pos)
 		{
 
 		}
 
-		void Tile::draw(sf::RenderWindow& window)
+		void Wall::draw(sf::RenderWindow& window)
 		{
 			window.draw(m_outline);
 		}

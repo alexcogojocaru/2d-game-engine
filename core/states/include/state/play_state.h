@@ -3,7 +3,7 @@
 #include <gameui/gameui.h>
 #include <entity/player.h>
 #include <box2d/box2d.h>
-#include <gamemap/tile.h>
+#include <gamemap/map.h>
 #include "state.h"
 
 namespace texp=core::texture_properties;
@@ -16,8 +16,9 @@ namespace core
         std::shared_ptr<HealthBar> m_healthBar;
         std::shared_ptr<Player> m_player;
         std::shared_ptr<b2World> m_world;
-        map::Tile* tile;
-        map::Tile* tile1;
+        //map::Wall tile;
+        sf::Clock clock;
+        map::Map* map;
 
         float timeStep = 1.0f / 60.0f;
         int32 velocityIterations = 6;

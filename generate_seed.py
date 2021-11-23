@@ -1,37 +1,15 @@
 from random import randint
 
+WIDTH, HEIGHT, OFFSET = 1920, 1080, 2
 
-seed = ''
-room_type = [x for x in range(2, 7)]
-stop = 3
+def generate_seed():
+	'''
+		SEED_STRUCTURE = <WIDTH><HEIGHT>
+	'''
 
-direction_map = { 'n': 's', 's': 'n', 'e': 'w', 'w': 'e' }
+	_width = int(WIDTH / 64) - OFFSET
+	_height = int(HEIGHT / 64) - OFFSET
+	print(randint(_width / 2, _width))
+	print(randint(_height / 2, _height))
 
-def generate_map(filter=[]):
-    global seed, stop
-
-    stop -= 1
-
-    if stop == 0:
-        return
-
-    directions = [ 'n', 's', 'e', 'w' ]
-    for dir in filter:
-        directions.remove(dir)
-
-    for _ in range(randint(1, 4)):
-        if len(directions) > 0:
-            selected_room = room_type[randint(0, len(room_type) - 1)]
-            selected_direction = directions[randint(0, len(directions) - 1)]
-            directions.remove(selected_direction)
-            seed += f'{selected_room}{selected_direction}'
-
-            if randint(0, 1) == 1:
-                # add new node 
-                generate_map([direction_map[selected_direction]])
-            else:
-                seed += 't'
-
-generate_map()
-
-print(seed)
+generate_seed()

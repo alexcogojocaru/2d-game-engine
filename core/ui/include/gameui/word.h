@@ -19,8 +19,8 @@ namespace core
 
 	public:
 		Word();
-		Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture);
-		Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f&& startPos, const sf::Texture& texture);
+		Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture, float scale_factor=1.0f);
+		Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f&& startPos, const sf::Texture& texture, float scale_factor = 1.0f);
 
 		void update(bool move);
 		void draw(sf::RenderWindow& window);

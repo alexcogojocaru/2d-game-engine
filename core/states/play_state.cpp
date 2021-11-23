@@ -14,48 +14,22 @@ namespace core
         const sf::Texture& texture = textureManager->getTexture("texture");
         m_player = std::make_shared<Player>(*m_world, texturePos, texture);
 
-        tile = new map::Tile(*m_world, 320, 32, b2Vec2(64, 64));
-        tile1 = new map::Tile(*m_world, 32, 224, b2Vec2(64, 128));
+        /*tile = map::Wall(*m_world, 20, 1, b2Vec2(64, 64));*/
+        map = new map::Map(*m_world);
+        m_player->setClock(&clock);
     }
 
     void PlayState::setupWorld()
     {
         b2Vec2 gravity(0.0f, 0.0f);
         m_world = std::make_shared<b2World>(gravity);
-    
-        // b2BodyDef groundBodyDefinition;
-        // groundBodyDefinition.type = b2_staticBody;
-        // groundBodyDefinition.position.Set(100.0f, 400.0f);
-
-        // b2Body* groundBody = m_world->CreateBody(&groundBodyDefinition);
-        // b2PolygonShape groundBox;
-        // groundBox.SetAsBox(8.0f * SCALE_FACTOR, 8.0f * SCALE_FACTOR);
-
-        // groundBody->CreateFixture(&groundBox, 0.0f);
     }
 
     void PlayState::update()
     {
+        State::update();
+
         m_world->Step(timeStep, velocityIterations, positionIterations);
-
-        sf::Event _event;
-        while (window.pollEvent(_event))
-        {
-            switch (_event.type)
-            {
-            case sf::Event::Closed:
-                window.close();
-                break;
-
-            case sf::Event::KeyPressed:
-                break;
-
-            case sf::Event::MouseButtonPressed:
-                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                log_info("%d %d", mousePos.x, mousePos.y);
-                break;
-            }
-        }
 
         for (b2Body* bodyIterator = m_world->GetBodyList(); bodyIterator != 0; bodyIterator = bodyIterator->GetNext())
         {
@@ -70,9 +44,6 @@ namespace core
                 sprite.setPosition(bodyIterator->GetPosition().x, bodyIterator->GetPosition().y);
                 sprite.setRotation(bodyIterator->GetAngle() * 180 / b2_pi);
 
-                // b2Vec2 pos = bodyIterator->GetPosition();
-                // printf("%f %f\n", pos.x, pos.y);
-
                 window.draw(sprite);
             }
         }
@@ -84,7 +55,6 @@ namespace core
     {
         m_player->draw(window);
         m_healthBar->draw(window);
-        tile->draw(window);
-        tile1->draw(window);
+        map->draw(window);
     }
 }
