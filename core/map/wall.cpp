@@ -20,6 +20,9 @@ namespace core
 			width  *= 32;
 			height *= 32;
 
+			pos.x *= 64;
+			pos.y *= 64;
+
 			uint32_t width_minimum_factor = (width / DIMENSION - 1) * DIMENSION;
 			uint32_t height_minimum_factor = (height / DIMENSION - 1) * DIMENSION;
 

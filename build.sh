@@ -3,4 +3,4 @@
 cmake .
 make
 
-./core/demo
+./run.sh

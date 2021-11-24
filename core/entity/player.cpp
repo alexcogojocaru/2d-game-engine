@@ -1,14 +1,19 @@
 #include <iostream> 
 #include <input/keyboard_input.h>
-#include <Candle/RadialLight.hpp>
 #include "include/entity/player.h"
 
 namespace core
 {
-    Player::Player(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture)
-        : Entity(world, texturePos, texture)
+    Player::Player(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture, const sf::Vector2f& pos)
+        : Entity(world, texturePos, texture, pos)
     {
         
+    }
+
+    Player::Player(b2World& world, sf::Vector2f&& texturePos, const sf::Texture& texture, const sf::Vector2f&& pos)
+        : Entity(world, texturePos, texture, pos)
+    {
+
     }
 
     Player::~Player()

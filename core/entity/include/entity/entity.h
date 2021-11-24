@@ -8,7 +8,7 @@
 #include "properties.h"
 
 #define TILESET_DIMENSION 16
-#define MOVE_SPEED 100
+#define MOVE_SPEED 50
 #define SCALE_FACTOR 4
 
 using namespace engine::resources;
@@ -28,10 +28,11 @@ namespace core
         sf::Clock* m_clock;
 
     private:
-        void createBody(b2World& world);
+        void createBody(b2World& world, float x, float y, float dimension);
 
     public:
-        Entity(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture);
+        Entity(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture, const sf::Vector2f& pos, float dimension=16);
+        Entity(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture, const sf::Vector2f&& pos, float dimension=16);
         virtual ~Entity();
 
         void setPosition(const sf::Vector2f&& pos);

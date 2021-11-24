@@ -10,13 +10,15 @@ namespace core
         m_healthBar = HealthBar::getInstance(healthTexture, 100.0f, 4);
 
         setupWorld();
-        sf::Vector2f texturePos = sf::Vector2f(8, 5);
+        sf::Vector2f texturePos = sf::Vector2f(10, 5);
+        sf::Vector2f enemyTexturepos = sf::Vector2f(1, 17);
         const sf::Texture& texture = textureManager->getTexture("texture");
-        m_player = std::make_shared<Player>(*m_world, texturePos, texture);
+        m_player = std::make_shared<Player>(*m_world, texturePos, texture, sf::Vector2f(300, 400));
+        m_enemy = std::make_shared<Enemy>(*m_world, enemyTexturepos, texture, sf::Vector2f(600, 400), 32);
 
-        /*tile = map::Wall(*m_world, 20, 1, b2Vec2(64, 64));*/
         map = new map::Map(*m_world);
         m_player->setClock(&clock);
+        m_enemy->setClock(&clock);
     }
 
     void PlayState::setupWorld()
@@ -54,6 +56,7 @@ namespace core
     void PlayState::draw()
     {
         m_player->draw(window);
+        m_enemy->draw(window);
         m_healthBar->draw(window);
         map->draw(window);
     }

@@ -4,5 +4,4 @@ project ("sfml-2d")
 
 add_subdirectory(src)
 add_subdirectory(engine)
-add_subdirectory(Candle)
 add_subdirectory(core)

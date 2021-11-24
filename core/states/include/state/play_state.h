@@ -2,6 +2,7 @@
 
 #include <gameui/gameui.h>
 #include <entity/player.h>
+#include <entity/enemy.h>
 #include <box2d/box2d.h>
 #include <gamemap/map.h>
 #include "state.h"
@@ -14,9 +15,9 @@ namespace core
     {
     private:
         std::shared_ptr<HealthBar> m_healthBar;
-        std::shared_ptr<Player> m_player;
+        std::shared_ptr<Entity> m_player;
+        std::shared_ptr<Entity> m_enemy;
         std::shared_ptr<b2World> m_world;
-        //map::Wall tile;
         sf::Clock clock;
         map::Map* map;
 
