@@ -15,6 +15,7 @@ namespace core
 	}
 
 	HealthBar::HealthBar(const sf::Texture& healthBarTexture, float totalHealth, int8_t numberOfHearts)
+		: m_totalHealth(totalHealth)
 	{
 		float heart_position_x = 0;
 		float heart_position_y = 0;

@@ -42,9 +42,9 @@ namespace core
 		}
 	}
 
-	void MenuState::update()
+	void MenuState::update(float deltaTime)
 	{
-		State::update();
+		State::update(deltaTime);
 	}
 
 	void MenuState::draw()

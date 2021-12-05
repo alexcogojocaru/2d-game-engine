@@ -2,6 +2,9 @@
 
 #include "wall.h"
 
+/// <summary>
+/// Namespace that contains the implementation for the core game
+/// </summary>
 namespace core
 {
 	namespace map
@@ -16,6 +19,7 @@ namespace core
 			Map();
 			Map(b2World& world);
 
+			void update(candle::RadialLight* light);
 			void draw(sf::RenderWindow& window);
 		};
 	}

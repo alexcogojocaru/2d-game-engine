@@ -6,7 +6,7 @@ namespace core
 	{
 		std::string SeedGenerator::generate(uint32_t width, uint32_t height)
 		{
-
+			return std::string();
 		}
 	}
 }

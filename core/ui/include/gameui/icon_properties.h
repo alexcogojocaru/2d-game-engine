@@ -2,6 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
+/// <summary>
+/// Namespace that contains the implementation for the core game
+/// </summary>
 namespace core
 {
 	namespace constants

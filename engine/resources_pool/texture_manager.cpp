@@ -31,6 +31,16 @@ namespace engine
 			return std::ref(m_textures[key]);
 		}
 
+		sf::Texture TextureManager::getCopyTexture(std::string key)
+		{
+			return m_textures[key];
+		}
+
+		sf::Texture* TextureManager::getPtrTexture(std::string key)
+		{
+			return &m_textures[key];
+		}
+
 		std::shared_ptr<TextureManager> TextureManager::getInstance(std::map<std::string, std::string> texturePaths)
 		{
 			if (s_instance == nullptr)

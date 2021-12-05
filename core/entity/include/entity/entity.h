@@ -5,41 +5,79 @@
 #include <memory>
 #include <gameui/gameui.h>
 #include <resources_pool/texture_manager.h>
-#include "properties.h"
+#include "animation.h"
+#include "drawable.h"
 
-#define TILESET_DIMENSION 16
-#define MOVE_SPEED 50
-#define SCALE_FACTOR 4
+#define TILESET_DIMENSION   16
+#define MOVE_SPEED          8000
+#define SWITCH_TIME         0.2f
 
 using namespace engine::resources;
+using namespace core::constants;
 
+/// <summary>
+/// Namespace that contains the implementation for the core game
+/// </summary>
 namespace core
 {
-    class Entity
+    /// <summary>
+    /// Abstract class for entities that interact on the screen (players, enemies)
+    /// </summary>
+    class Entity : public Drawable
     {
     protected:
-        sf::Sprite m_sprite;
-        sf::RectangleShape m_outline;
-        sf::Vector2f m_texturePos;
-        b2Body* m_body;
-        entity_stats stats;
-        Word m_healthIndicator;
-        std::shared_ptr<TextureManager> textureManager;
-        sf::Clock* m_clock;
-
-    private:
-        void createBody(b2World& world, float x, float y, float dimension);
+        sf::Vector2f                    m_texturePos;           // the texture position in the sprite sheet
+        Animation                       m_animation;            // animation object for sprite transition
+        b2Body*                         m_body;                 // box2d body for collision
+        entity_stats                    stats;                  // entity's stats and properties
+        animation_info                  m_animInfo;             // animation info with the entity's state
+        float                           m_animationFrameOffset; // animation frame offset (how many position to skip in the sprite sheet)
+        bool                            m_isFacingRight;        // the direction of the entity
+        float                           lastPosition;
+        float                           m_offset;
 
     public:
-        Entity(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture, const sf::Vector2f& pos, float dimension=16);
-        Entity(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture, const sf::Vector2f&& pos, float dimension=16);
+        bool                            p_isAttacking;
+        uint32_t                        p_attackCount;
+
+    private:
+        /// <summary>
+        /// Creates the entity body and adds it to the box2d world
+        /// </summary>
+        /// <param name="world">the box2d world, previously initialized</param>
+        /// <param name="x">the x axis position for the body</param>
+        /// <param name="y">the y axis position for the body</param>
+        /// <param name="dimension">the dimension for an edge (the body is a square shape)</param>
+        void createBody(b2World& world, float x, float y, float dimension);
+
+    protected:
+        void animationUpdate(float deltaTime);
+
+    public:
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="world">a valid box2d world</param>
+        /// <param name="entityInfo"></param>
+        /// <param name="texture">a valid texture reference</param>
+        /// <param name="dimension">dimension of the entity (can be MEDIUM_DIMENSION or LARGE_DIMENSION)</param>
+        Entity(b2World& world, entity_info entityInfo, const sf::Texture& texture, float dimension=MEDIUM_DIMENSION);
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
         virtual ~Entity();
 
-        void setPosition(const sf::Vector2f&& pos);
-        void setPosition(const sf::Vector2f& pos);
-        void setClock(sf::Clock* clock) { m_clock = clock; }
+        /// <summary>
+        /// This method is called every frame and applies updates on the entity
+        /// </summary>
+        /// <param name="deltaTime">the game loop delta time</param>
+        void update(float deltaTime) override;
 
-        virtual void update() = 0;
-        virtual void draw(sf::RenderWindow& window) = 0;
+        /// <summary>
+        /// Changes the entity's direction to left or right based on the argument provided
+        /// </summary>
+        /// <param name="right">the direction is facing</param>
+        void setDirectionToRight(bool right) { m_isFacingRight = right; }
     };
 }

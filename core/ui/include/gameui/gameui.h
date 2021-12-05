@@ -4,6 +4,9 @@
 #include "healthbar.h"
 #include "word.h"
 
+/// <summary>
+/// Namespace that contains the implementation for the core game
+/// </summary>
 namespace core
 {
     namespace texture_properties

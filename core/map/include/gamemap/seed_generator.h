@@ -1,10 +1,10 @@
 #pragma once
 
 #include <string>
-#ifdef _WIN32
-#include <Windows.h>
-#endif
 
+/// <summary>
+/// Namespace that contains the implementation for the core game
+/// </summary>
 namespace core
 {
 	namespace map

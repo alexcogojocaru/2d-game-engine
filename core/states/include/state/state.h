@@ -8,6 +8,9 @@
 
 using namespace engine::resources;
 
+/// <summary>
+/// Namespace that contains the implementation for the core game
+/// </summary>
 namespace core
 {
 	class State
@@ -19,12 +22,14 @@ namespace core
 		uint32_t screenHeight;
 		sf::RenderWindow& window;
 
-		bool m_isFullscreen;
+		bool		m_isFullscreen;
+		bool		m_hasPlayerAttacked;
+		uint32_t	m_playerAttackCount;
 
 	public:
 		State(sf::RenderWindow& window, uint32_t width, uint32_t height);
 		
-		virtual void update();
+		virtual void update(float deltaTime);
 		virtual void draw() = 0;
 	};
 }

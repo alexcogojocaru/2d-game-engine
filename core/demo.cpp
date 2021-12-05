@@ -7,6 +7,7 @@
 #include <gameui/gameui.h>
 #include <gamemap/wall.h>
 #include <state/states.h>
+#include <input/keyboard_input.h>
 
 using namespace std;
 using namespace engine::resources;
@@ -17,38 +18,6 @@ namespace texp = core::texture_properties;
 
 int main()
 {
-    //sf::RenderWindow window(sf::VideoMode(400, 400), "app");
-
-    //candle::RadialLight light;
-    //light.setRange(100);
-
-    //candle::EdgeVector edges;
-    //edges.emplace_back(sf::Vector2f(200, 100), sf::Vector2f(300, 100));
-
-    //while (window.isOpen())
-    //{
-    //    sf::Event e;
-    //    while (window.pollEvent(e))
-    //    {
-    //        if (e.type == sf::Event::Closed)
-    //        {
-    //            window.close();
-    //        }
-
-    //        if (e.type == sf::Event::MouseMoved)
-    //        {
-    //            sf::Vector2f mp(sf::Mouse::getPosition(window));
-
-    //            light.setPosition(mp);
-    //            //light.castLight(edges.begin(), edges.end());
-    //        }
-    //    }
-
-    //    window.clear();
-    //    window.draw(light);
-    //    window.display();
-    //}
-
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SFML Window");
     window.setFramerateLimit(60);
 
@@ -61,16 +30,18 @@ int main()
     std::shared_ptr<TextureManager> textureManager = TextureManager::getInstance(textures);
     std::shared_ptr<State> state = std::make_shared<PlayState>(window, window.getSize().x, window.getSize().y);
 
+    sf::Clock clock;
+    float deltaTime;
+
     while (window.isOpen())
     { 
-        if (window.hasFocus())
-        {
-            window.clear();
+        deltaTime = clock.restart().asSeconds();
 
-            state->update();
-            state->draw();
-            window.display();
-        }
+        window.clear();
+
+        state->update(deltaTime);
+        state->draw();
+        window.display();
     }
 
     return 0;

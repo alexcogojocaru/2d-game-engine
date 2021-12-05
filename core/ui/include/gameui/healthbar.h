@@ -8,6 +8,9 @@
 
 using namespace engine::ui;
 
+/// <summary>
+/// Namespace that contains the implementation for the core game
+/// </summary>
 namespace core
 {
 	constexpr int32_t HEART_DEFAULT_WIDTH			= 16;

@@ -6,19 +6,39 @@ namespace core
     PlayState::PlayState(sf::RenderWindow& window, uint32_t width, uint32_t height)
         : State(window, width, height)
     {
-        const sf::Texture& healthTexture = textureManager->getTexture(texp::HEALTH_TEXTURE);
+        const sf::Texture& healthTexture    = textureManager->getTexture(texp::HEALTH_TEXTURE);
+        const sf::Texture& texture          = textureManager->getTexture("texture");
+
         m_healthBar = HealthBar::getInstance(healthTexture, 100.0f, 4);
-
         setupWorld();
-        sf::Vector2f texturePos = sf::Vector2f(10, 5);
-        sf::Vector2f enemyTexturepos = sf::Vector2f(1, 17);
-        const sf::Texture& texture = textureManager->getTexture("texture");
-        m_player = std::make_shared<Player>(*m_world, texturePos, texture, sf::Vector2f(300, 400));
-        m_enemy = std::make_shared<Enemy>(*m_world, enemyTexturepos, texture, sf::Vector2f(600, 400), 32);
 
-        map = new map::Map(*m_world);
-        m_player->setClock(&clock);
-        m_enemy->setClock(&clock);
+        animation_info playerAnimInfo;
+        playerAnimInfo.idleInfo     = MALE_MAGE_IDLE;
+        playerAnimInfo.runningInfo  = MALE_MAGE_RUNNING;
+        playerAnimInfo.dimension    = MEDIUM_DIMENSION;
+
+        animation_info ogreAnimInfo;
+        ogreAnimInfo.idleInfo      = OGRE_MONSTER_IDLE;
+        ogreAnimInfo.runningInfo   = OGRE_MONSTER_RUNNING;
+        ogreAnimInfo.dimension     = LARGE_DIMENSION;
+        
+        animation_info undeadAnimInfo;
+        undeadAnimInfo.idleInfo     = UNDEAD_MONSTER_IDLE;
+        undeadAnimInfo.runningInfo  = UNDEAD_MONSTER_RUNNING;
+        undeadAnimInfo.dimension    = LARGE_DIMENSION;
+
+        entity_info ogreInfo    = { ogreAnimInfo, sf::Vector2f(1000, 400) };
+        entity_info undeadInfo  = { undeadAnimInfo, sf::Vector2f(700, 500) };
+        entity_info playerInfo  = { playerAnimInfo, sf::Vector2f(300, 400) };
+
+        m_player    = std::make_shared<Player>(*m_world, playerInfo, texture);
+        m_enemy     = std::make_shared<Enemy>(*m_world, ogreInfo, texture, LARGE_DIMENSION);
+        m_enemy0    = std::make_shared<Enemy>(*m_world, undeadInfo, texture, LARGE_DIMENSION);
+
+        light       = dynamic_cast<Player&>(*m_player).getLight();
+        map         = new map::Map(*m_world);
+
+        dynamic_cast<Player&>(*m_player).setEnemyDebug(m_enemy);
     }
 
     void PlayState::setupWorld()
@@ -27,36 +47,29 @@ namespace core
         m_world = std::make_shared<b2World>(gravity);
     }
 
-    void PlayState::update()
+    void PlayState::update(float deltaTime)
     {
-        State::update();
-
+        State::update(deltaTime);
         m_world->Step(timeStep, velocityIterations, positionIterations);
 
-        for (b2Body* bodyIterator = m_world->GetBodyList(); bodyIterator != 0; bodyIterator = bodyIterator->GetNext())
+        if (m_hasPlayerAttacked)
         {
-            if (bodyIterator->GetType() == b2_staticBody)
-            {
-                const sf::Texture& texture = textureManager->getTexture(texp::SPRITE_TEXTURE);
-                sf::Vector2f texturePosition(1, 1);
-                sf::IntRect spriteTextureRect(texturePosition.x * TILESET_DIMENSION, texturePosition.y * TILESET_DIMENSION, 16, 16);
-                sf::Sprite sprite(texture, spriteTextureRect);
-
-                sprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
-                sprite.setPosition(bodyIterator->GetPosition().x, bodyIterator->GetPosition().y);
-                sprite.setRotation(bodyIterator->GetAngle() * 180 / b2_pi);
-
-                window.draw(sprite);
-            }
+            m_player->p_isAttacking = true;
+            m_hasPlayerAttacked = false;
+            m_player->p_attackCount = m_playerAttackCount;
         }
 
-        m_player->update();
+        m_player->update(deltaTime);
+        m_enemy->update(deltaTime);
+        m_enemy0->update(deltaTime);
+        map->update(light);
     }
 
     void PlayState::draw()
     {
         m_player->draw(window);
         m_enemy->draw(window);
+        m_enemy0->draw(window);
         m_healthBar->draw(window);
         map->draw(window);
     }

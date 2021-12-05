@@ -4,40 +4,67 @@
 
 namespace core
 {
-    Player::Player(b2World& world, sf::Vector2f& texturePos, const sf::Texture& texture, const sf::Vector2f& pos)
-        : Entity(world, texturePos, texture, pos)
+    Player::Player(b2World& world, entity_info entityInfo, const sf::Texture& texture) : 
+        Entity(world, entityInfo, texture),
+        m_info(entityInfo), 
+        m_hasAttackStarted(false), 
+        m_attackTotalTime(0.0f), 
+        m_numberOfRotations(0)
     {
-        
+        m_animation = Animation(entityInfo.animInfo);
+        m_weapon = std::make_shared<Weapon>(world, texture, sf::Vector2f(18, 11));
+
+        sf::Vector2f weaponPos = m_weapon->getSize();
+        m_weapon->setOrigin(weaponPos.x * 0.5f, weaponPos.y * 0.9);
+
+        m_light.setRange(150);
+        m_light.setColor(sf::Color::Yellow);
+
+        m_collider = std::make_unique<Collider>(m_weapon.get());
     }
 
-    Player::Player(b2World& world, sf::Vector2f&& texturePos, const sf::Texture& texture, const sf::Vector2f&& pos)
-        : Entity(world, texturePos, texture, pos)
+    void Player::update(float deltaTime)
     {
-
-    }
-
-    Player::~Player()
-    {
-
-    }
-
-    void Player::update()
-    {
-        sf::Time dt = m_clock->restart();
+        Entity::update(deltaTime);
 
         engine::input::_directions moveVector = engine::input::KeyboardInput::handleInput();
-        m_body->SetLinearVelocity(b2Vec2(moveVector.x_ * MOVE_SPEED, moveVector.y_ * MOVE_SPEED));
+        m_body->SetLinearVelocity(b2Vec2(moveVector.x_ * MOVE_SPEED * deltaTime, moveVector.y_ * MOVE_SPEED * deltaTime));
+
+        Entity::animationUpdate(deltaTime);
+
+        attack(deltaTime);
+
+        m_light.setPosition(m_body->GetPosition().x, m_body->GetPosition().y);
+        m_light.setRotation((m_isFacingRight) ? 0 : 180);
+        m_weapon->setPosition(m_body->GetPosition().x + 32, m_body->GetPosition().y + 48);
+    }
+
+    void Player::attack(float deltaTime)
+    {
+        if (p_isAttacking)
+        {    
+            m_attackTotalTime += deltaTime;
+            m_weapon->rotate(5);
+            m_numberOfRotations += 5;
+
+            if (m_testEnemy)
+            {
+                m_collider->checkCollision<Entity>(m_testEnemy.get());
+            }
+
+            if (m_numberOfRotations == 135)
+            {
+                p_isAttacking = false;
+                m_weapon->rotate(-135);
+                m_numberOfRotations = 0;
+            }
+        }
     }
 
     void Player::draw(sf::RenderWindow& window)
     {
-        update();
-
-        m_sprite.setPosition(m_body->GetPosition().x, m_body->GetPosition().y);
-        m_outline.setPosition(m_body->GetPosition().x, m_body->GetPosition().y);
-
-        window.draw(m_sprite);
-        window.draw(m_outline);
-        //m_healthIndicator.draw(window);
+        Drawable::draw(window);
+        m_weapon->draw(window);
+        //window.draw(m_light);
     }
 }

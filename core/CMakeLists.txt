@@ -5,10 +5,7 @@ add_subdirectory(ui)
 add_subdirectory(map)
 add_subdirectory(states)
 
-add_executable (
-	demo
-	"demo.cpp"
- )
+add_executable (demo "demo.cpp")
 
 if (WIN32)
 	target_link_libraries (demo box2d-lib 

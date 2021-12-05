@@ -2,13 +2,18 @@
 
 namespace core
 {
-	State::State(sf::RenderWindow& window, uint32_t width, uint32_t height)
-		: screenWidth(width), screenHeight(height), window(window), m_isFullscreen(false)
+	State::State(sf::RenderWindow& window, uint32_t width, uint32_t height) : 
+        screenWidth(width), 
+        screenHeight(height), 
+        window(window), 
+        m_isFullscreen(false), 
+        m_hasPlayerAttacked(false), 
+        m_playerAttackCount(0)
 	{
 		textureManager = TextureManager::getInstance();
 	}
 
-	void State::update()
+	void State::update(float deltaTime)
 	{
         sf::Event _event;
         while (window.pollEvent(_event))
@@ -46,6 +51,8 @@ namespace core
             case sf::Event::MouseButtonPressed:
                 sf::Vector2i mousePos = sf::Mouse::getPosition(window);
                 log_info("%d %d", mousePos.x, mousePos.y);
+                m_hasPlayerAttacked = true;
+                m_playerAttackCount = (m_playerAttackCount + 1) % 4;
                 break;
             }
         }
