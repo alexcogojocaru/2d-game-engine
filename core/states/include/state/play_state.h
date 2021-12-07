@@ -26,7 +26,6 @@ namespace core
         std::shared_ptr<b2World>    m_world;
         std::shared_ptr<Item>       m_item;
         map::Map*                   map;
-        candle::RadialLight*        light;
         sf::VertexArray             quad;
 
         float timeStep = 1.0f / 60.0f;

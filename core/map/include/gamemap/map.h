@@ -19,7 +19,7 @@ namespace core
 			Map();
 			Map(b2World& world);
 
-			void update(candle::RadialLight* light);
+			void update();
 			void draw(sf::RenderWindow& window);
 		};
 	}

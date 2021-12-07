@@ -17,7 +17,6 @@ if (WIN32)
 		resources-pool-lib
 		map-lib
 		states-lib
-	
 	)
 
 	target_link_libraries (demo 

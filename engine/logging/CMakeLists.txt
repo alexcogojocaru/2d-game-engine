@@ -1,6 +1,6 @@
 set (LOGGING_HEADER_FILES "include/logging/log.h")
 
-add_library (logging-lib ${LOGGING_HEADER_FILES})
+add_library (logging-lib ${LOGGING_HEADER_FILES} "log.cpp")
 set_target_properties(logging-lib PROPERTIES LINKER_LANGUAGE CXX)
 
 target_link_libraries (logging-lib)

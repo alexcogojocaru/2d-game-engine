@@ -1,6 +1,5 @@
 #pragma once
 
-#include <Candle/RadialLight.hpp>
 #include "entity.h"
 #include "animation.h"
 #include "../items/weapon.h"
@@ -20,7 +19,6 @@ namespace core
     {
     private:
         std::shared_ptr<Item>       m_weapon;
-        candle::RadialLight         m_light;
         std::unique_ptr<Collider>   m_collider;
         entity_info                 m_info;
         bool                        m_hasAttackStarted;
@@ -52,8 +50,6 @@ namespace core
         void setEnemyDebug(std::shared_ptr<Entity> enemy) { m_testEnemy = enemy; }
 
         void attack(float deltaTime);
-
-        candle::RadialLight* getLight() { return &m_light; }
 
         void draw(sf::RenderWindow& window) override;
     };

@@ -17,9 +17,6 @@ namespace core
         sf::Vector2f weaponPos = m_weapon->getSize();
         m_weapon->setOrigin(weaponPos.x * 0.5f, weaponPos.y * 0.9);
 
-        m_light.setRange(150);
-        m_light.setColor(sf::Color::Yellow);
-
         m_collider = std::make_unique<Collider>(m_weapon.get());
     }
 
@@ -33,9 +30,6 @@ namespace core
         Entity::animationUpdate(deltaTime);
 
         attack(deltaTime);
-
-        m_light.setPosition(m_body->GetPosition().x, m_body->GetPosition().y);
-        m_light.setRotation((m_isFacingRight) ? 0 : 180);
         m_weapon->setPosition(m_body->GetPosition().x + 32, m_body->GetPosition().y + 48);
     }
 

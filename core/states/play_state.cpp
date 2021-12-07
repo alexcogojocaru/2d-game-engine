@@ -35,7 +35,6 @@ namespace core
         m_enemy     = std::make_shared<Enemy>(*m_world, ogreInfo, texture, LARGE_DIMENSION);
         m_enemy0    = std::make_shared<Enemy>(*m_world, undeadInfo, texture, LARGE_DIMENSION);
 
-        light       = dynamic_cast<Player&>(*m_player).getLight();
         map         = new map::Map(*m_world);
 
         dynamic_cast<Player&>(*m_player).setEnemyDebug(m_enemy);
@@ -62,7 +61,7 @@ namespace core
         m_player->update(deltaTime);
         m_enemy->update(deltaTime);
         m_enemy0->update(deltaTime);
-        map->update(light);
+        map->update();
     }
 
     void PlayState::draw()

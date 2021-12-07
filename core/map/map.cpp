@@ -25,16 +25,9 @@ namespace core
 			m_walls.push_back(vertical_wall_4);
 		}
 
-		void Map::update(candle::RadialLight* light)
+		void Map::update()
 		{
-			for (auto& wall : m_walls)
-			{
-				std::vector<candle::EdgeVector> edges = wall.getEdges();
-				for (auto& edge : edges)
-				{
-					light->castLight(edge.begin(), edge.end());
-				}
-			}
+
 		}
 
 		void Map::draw(sf::RenderWindow& window)
