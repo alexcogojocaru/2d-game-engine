@@ -7,4 +7,9 @@ namespace core
 	{
 
 	}
+
+	bool Collider::checkCollision(Drawable* object)
+	{
+		return m_item->getOutlineBounds().intersects(object->getOutlineBounds());
+	}
 }

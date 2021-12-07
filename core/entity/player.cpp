@@ -43,7 +43,11 @@ namespace core
 
             if (m_testEnemy)
             {
-                m_collider->checkCollision<Entity>(m_testEnemy.get());
+                bool hasCollided = m_collider->checkCollision(m_testEnemy.get());
+                if (hasCollided)
+                {
+                    printf("collision\n");
+                }
             }
 
             if (m_numberOfRotations == 135)
