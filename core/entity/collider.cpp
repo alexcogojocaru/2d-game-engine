@@ -2,7 +2,7 @@
 
 namespace core
 {
-	Collider::Collider(Item* item) :
+	Collider::Collider(Drawable* item) :
 		m_item(item)
 	{
 

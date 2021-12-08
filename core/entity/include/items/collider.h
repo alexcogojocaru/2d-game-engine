@@ -10,7 +10,7 @@ namespace core
 		Drawable* m_item;
 
 	public:
-		Collider(Item* item);
+		Collider(Drawable* item);
 	
 		bool checkCollision(Drawable* object);
 	};

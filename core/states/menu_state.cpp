@@ -40,6 +40,10 @@ namespace core
 				offset += 32;
 			}
 		}
+
+		const sf::Texture& backgroundTexture = textureManager->getTexture(texp::MENU_BACKGROUND_TEXTURE);
+		m_background = sf::Sprite(backgroundTexture);
+		m_background.setScale(3.5, 3);
 	}
 
 	void MenuState::update(float deltaTime)
@@ -49,6 +53,8 @@ namespace core
 
 	void MenuState::draw()
 	{
+		window.draw(m_background);
+
 		for (auto& word : m_words)
 		{
 			word.draw(window);

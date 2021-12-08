@@ -7,6 +7,9 @@ namespace core
 {
 	class MenuState : public State
 	{
+	private:
+		sf::Sprite m_background;
+
 	public:
 		MenuState(sf::RenderWindow& window, uint32_t width, uint32_t height);
 

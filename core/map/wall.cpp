@@ -21,8 +21,6 @@ namespace core
 
 		Wall::Wall(b2World& world, uint32_t width, uint32_t height, b2Vec2& pos)
 		{
-			srand((unsigned int)time(NULL));
-
 			m_textureManager = TextureManager::getInstance();
 			width  *= DIMENSION;
 			height *= DIMENSION;
@@ -52,8 +50,6 @@ namespace core
 
 			float xStart = pos.x;
 			float yStart = pos.y;
-
-			printf("Vertices size = %d\n", m_vertices.getVertexCount());
 
 			for (int i = 0; i < width / DIMENSION; i++)
 			{

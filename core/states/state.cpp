@@ -45,6 +45,12 @@ namespace core
                         
                         m_isFullscreen = !m_isFullscreen;
                     }
+
+                    if (_event.key.code == sf::Keyboard::Space)
+                    {
+                        m_hasPlayerAttacked = true;
+                        m_playerAttackCount = (m_playerAttackCount + 1) % 4;
+                    }
                 }
                 break;
 

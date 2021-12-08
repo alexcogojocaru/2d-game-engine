@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <gamemap/seed_generator.h>
 #include "include/state/play_state.h"
 
 namespace core
@@ -13,8 +14,8 @@ namespace core
         setupWorld();
 
         animation_info playerAnimInfo;
-        playerAnimInfo.idleInfo     = MALE_MAGE_IDLE;
-        playerAnimInfo.runningInfo  = MALE_MAGE_RUNNING;
+        playerAnimInfo.idleInfo     = MALE_DINO_IDLE;
+        playerAnimInfo.runningInfo  = MALE_DINO_RUNNING;
         playerAnimInfo.dimension    = MEDIUM_DIMENSION;
 
         animation_info ogreAnimInfo;
@@ -35,9 +36,22 @@ namespace core
         m_enemy     = std::make_shared<Enemy>(*m_world, ogreInfo, texture, LARGE_DIMENSION);
         m_enemy0    = std::make_shared<Enemy>(*m_world, undeadInfo, texture, LARGE_DIMENSION);
 
-        map         = new map::Map(*m_world);
+        std::string seed = map::SeedGenerator::generate();
 
-        dynamic_cast<Player&>(*m_player).setEnemyDebug(m_enemy);
+        float startX = 1;
+        float startY = 1;
+
+        map = new map::Map(*m_world, "w20h10", sf::Vector2f(startX, startY));
+        map::seed_info mapSeedInfo = map->getSeedInfo();
+
+        //startX += 4;
+        startX = startX + mapSeedInfo.width + 2;
+        //startY = startY + mapSeedInfo.height + 3;
+
+        seed = map::SeedGenerator::generate();
+        //map1 = new map::Map(*m_world, seed, sf::Vector2f(startX, startY));
+
+        dynamic_cast<Player&>(*m_player).setEnemyDebug(m_enemy0);
     }
 
     void PlayState::setupWorld()
@@ -62,6 +76,7 @@ namespace core
         m_enemy->update(deltaTime);
         m_enemy0->update(deltaTime);
         map->update();
+        //map1->update();
     }
 
     void PlayState::draw()
@@ -71,5 +86,6 @@ namespace core
         m_enemy0->draw(window);
         m_healthBar->draw(window);
         map->draw(window);
+        //map1->draw(window);
     }
 }

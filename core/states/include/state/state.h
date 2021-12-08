@@ -4,9 +4,12 @@
 #include <gameui/gameui.h>
 #include <resources_pool/texture_manager.h>
 #include <vector>
+#include <gameui/gameui.h>
 #include <logging/log.h>
 
 using namespace engine::resources;
+
+namespace texp = core::texture_properties;
 
 /// <summary>
 /// Namespace that contains the implementation for the core game
