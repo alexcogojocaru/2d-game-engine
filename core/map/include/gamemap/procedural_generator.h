@@ -7,7 +7,7 @@ namespace core
 {
 	namespace map
 	{
-		class ProceduralGenerator : public std::thread
+		class ProceduralGenerator
 		{
 
 		}; // class ProceduralGenerator

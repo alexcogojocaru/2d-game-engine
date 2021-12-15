@@ -1,13 +1,7 @@
 #include <iostream>
-#include <ui/ui.h>
-#include <logging/log.h>
-#include <entity/player.h>
-#include <gameui/healthbar.h>
 #include <resources_pool/texture_manager.h>
-#include <gameui/gameui.h>
-#include <gamemap/wall.h>
 #include <state/states.h>
-#include <input/keyboard_input.h>
+#include <stack>
 
 using namespace std;
 using namespace engine::resources;
@@ -21,8 +15,9 @@ int main()
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SFML Window");
     window.setFramerateLimit(60);
 
-    /*sf::View playerView(sf::Vector2f(0, 0), sf::Vector2f(1920, 1080));
-    window.setView(playerView);*/
+    sf::Cursor cursor;
+    if (cursor.loadFromSystem(sf::Cursor::Cross))
+        window.setMouseCursor(cursor);
 
     srand((unsigned int)time(NULL));
 
@@ -34,10 +29,19 @@ int main()
     };
 
     std::shared_ptr<TextureManager> textureManager = TextureManager::getInstance(textures);
-    std::shared_ptr<State> state = std::make_shared<MenuState>(window, window.getSize().x, window.getSize().y);
+    std::shared_ptr<State> menuState = std::make_shared<MenuState>(window, window.getSize().x, window.getSize().y);
+    std::shared_ptr<State> playState = std::make_shared<PlayState>(window, window.getSize().x, window.getSize().y);
+
+    std::stack<std::shared_ptr<State>> states;
+
+    states.push(playState);
+    states.push(menuState);
 
     sf::Clock clock;
     float deltaTime;
+    bool stateChange;
+
+    std::shared_ptr<State> state = states.top();
 
     while (window.isOpen())
     { 
@@ -48,6 +52,14 @@ int main()
         state->update(deltaTime);
         state->draw();
         window.display();
+    
+        stateChange = state->isTheStateChanged();
+        if (stateChange)
+        {
+            /*states.pop();
+            state = states.top();*/
+            state = playState;
+        }
     }
 
     return 0;

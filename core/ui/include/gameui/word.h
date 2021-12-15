@@ -17,16 +17,26 @@ namespace core
 		static const uint32_t CHARACTER_MOVE_OFFSET;
 
 		std::vector<ui::Icon>	m_letters;
+		std::string				m_string;
 		sf::Vector2f			m_position;
 		uint32_t				m_length;
+		float					m_switchTime;
+		int						m_upDirection;
+		bool					m_isSelected;
 
 	public:
 		Word();
 		Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture, float scale_factor=1.0f);
 		Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f&& startPos, const sf::Texture& texture, float scale_factor=1.0f);
 
-		void update(bool move);
+		void update(float deltaTime);
 		void draw(sf::RenderWindow& window);
+
+		void select() { m_isSelected = true; };
+		void deselect();
+
+		void setString(std::string string) { m_string = string; }
+		std::string getString() const { return m_string; }
 
 		uint32_t getLength() const { return m_length; }
 		std::vector<ui::Icon>& getLetters() { return m_letters; }

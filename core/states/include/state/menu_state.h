@@ -8,7 +8,8 @@ namespace core
 	class MenuState : public State
 	{
 	private:
-		sf::Sprite m_background;
+		sf::Sprite	m_background;
+		int32_t	m_currentSelectedWord;
 
 	public:
 		MenuState(sf::RenderWindow& window, uint32_t width, uint32_t height);

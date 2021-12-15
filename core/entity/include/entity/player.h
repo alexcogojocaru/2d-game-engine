@@ -18,7 +18,6 @@ namespace core
     class Player : public Entity
     {
     private:
-        std::shared_ptr<Item>       m_weapon;
         std::unique_ptr<Collider>   m_collider;
         entity_info                 m_info;
         bool                        m_hasAttackStarted;

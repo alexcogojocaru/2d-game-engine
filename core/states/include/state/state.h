@@ -19,20 +19,23 @@ namespace core
 	class State
 	{
 	protected:
-		std::shared_ptr<TextureManager> textureManager;
-		std::vector<Word> m_words;
-		uint32_t screenWidth;
-		uint32_t screenHeight;
-		sf::RenderWindow& window;
+		std::shared_ptr<TextureManager>		textureManager;
+		std::vector<Word>					m_words;
+		uint32_t							screenWidth;
+		uint32_t							screenHeight;
+		sf::RenderWindow&					window;
 
-		bool		m_isFullscreen;
-		bool		m_hasPlayerAttacked;
-		uint32_t	m_playerAttackCount;
+		bool								m_changeState;
+		bool								m_isFullscreen;
+		bool								m_hasPlayerAttacked;
+		uint32_t							m_playerAttackCount;
 
 	public:
 		State(sf::RenderWindow& window, uint32_t width, uint32_t height);
 		
-		virtual void update(float deltaTime);
+		bool isTheStateChanged() const { return m_changeState; }
+
+		virtual void update(float deltaTime) = 0;
 		virtual void draw() = 0;
 	};
 }

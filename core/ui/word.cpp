@@ -10,8 +10,11 @@ namespace core
 
 	}
 
-	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture, float scale_factor)
-		: m_position(startPos)
+	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture, float scale_factor) : 
+		m_position(startPos), 
+		m_switchTime(0), 
+		m_upDirection(1), 
+		m_isSelected(false)
 	{
 		float xPosition = startPos.x;
 		float yPosition = startPos.y;
@@ -20,7 +23,6 @@ namespace core
 		{
 			ui::Icon icon(texture, code);
 			icon.setPosition(xPosition, yPosition);
-			//icon.setScaleFactor(scale_factor);
 			m_letters.push_back(icon);
 
 			xPosition += CHARACTER_SPACING;
@@ -35,9 +37,33 @@ namespace core
 
 	}
 
-	void Word::update(bool move)
-	{
+	void Word::deselect() 
+	{ 
+		m_isSelected = false; 
+		for (auto& letter : m_letters)
+		{
+			letter.setScaleFactor(3.0);
+		}
+	}
 
+	void Word::update(float deltaTime)
+	{
+		if (m_isSelected)
+		{
+			for (auto& letter : m_letters)
+			{
+				/*sf::Vector2f pos = letter.getPosition();
+				letter.setPosition(pos.x, pos.y + 1 * m_upDirection);
+
+				m_switchTime++;
+				if (m_switchTime == 50)
+				{
+					m_switchTime = 0;
+					m_upDirection *= -1;
+				}*/
+				letter.setScaleFactor(4);
+			}
+		}
 	}
 
 	void Word::draw(sf::RenderWindow& window)

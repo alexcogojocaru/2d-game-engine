@@ -13,7 +13,7 @@ namespace core
 		textureManager = TextureManager::getInstance();
 	}
 
-	void State::update(float deltaTime)
+	/*void State::update(float deltaTime)
 	{
         sf::Event _event;
         while (window.pollEvent(_event))
@@ -62,5 +62,5 @@ namespace core
                 break;
             }
         }
-	}
+	}*/
 }

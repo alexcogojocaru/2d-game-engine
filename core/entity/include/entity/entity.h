@@ -7,6 +7,7 @@
 #include <resources_pool/texture_manager.h>
 #include "animation.h"
 #include "drawable.h"
+#include "../items/item.h"
 
 #define TILESET_DIMENSION   16
 #define MOVE_SPEED          8000
@@ -26,6 +27,7 @@ namespace core
     class Entity : public Drawable
     {
     protected:
+        std::shared_ptr<Item>           m_weapon;
         sf::Vector2f                    m_texturePos;           // the texture position in the sprite sheet
         Animation                       m_animation;            // animation object for sprite transition
         b2Body*                         m_body;                 // box2d body for collision
@@ -35,6 +37,8 @@ namespace core
         bool                            m_isFacingRight;        // the direction of the entity
         float                           lastPosition;
         float                           m_offset;
+        bool                            m_hasTakenDamage;
+        float                           m_damageSwitchTime;
 
     public:
         bool                            p_isAttacking;
@@ -67,6 +71,9 @@ namespace core
         /// Destructor
         /// </summary>
         virtual ~Entity();
+
+        void takeDamage() { m_hasTakenDamage = true; }
+        Drawable* getWeapon() const { return m_weapon.get(); }
 
         /// <summary>
         /// This method is called every frame and applies updates on the entity

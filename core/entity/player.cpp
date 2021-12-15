@@ -41,14 +41,15 @@ namespace core
             m_weapon->rotate(5);
             m_numberOfRotations += 5;
 
-            if (m_testEnemy)
+           /* if (m_testEnemy)
             {
                 bool hasCollided = m_collider->checkCollision(m_testEnemy.get());
                 if (hasCollided)
                 {
-                    printf("collision\n");
+                    m_testEnemy->setColor(sf::Color::Red);
+                    m_testEnemy->takeDamage();
                 }
-            }
+            }*/
 
             if (m_numberOfRotations == 135)
             {
