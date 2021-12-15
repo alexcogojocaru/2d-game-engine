@@ -6,6 +6,9 @@ namespace core
 	{
 		m_sprite = sf::Sprite(texture);
 		m_sprite.setScale(SCALE_FACTOR, SCALE_FACTOR);
+
+		//m_sprite.setColor(sf::Color::Red);
+		//m_sprite.setColor(sf::Color::White);
 	}
 
 	void Drawable::draw(sf::RenderWindow& window)

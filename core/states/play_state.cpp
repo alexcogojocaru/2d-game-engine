@@ -41,7 +41,7 @@ namespace core
         float startX = 1;
         float startY = 1;
 
-        map = new map::Map(*m_world, "w20h10", sf::Vector2f(startX, startY));
+        map = new map::Map(*m_world, seed, sf::Vector2f(startX, startY));
         map::seed_info mapSeedInfo = map->getSeedInfo();
 
         //startX += 4;
@@ -52,6 +52,10 @@ namespace core
         //map1 = new map::Map(*m_world, seed, sf::Vector2f(startX, startY));
 
         dynamic_cast<Player&>(*m_player).setEnemyDebug(m_enemy0);
+
+        m_collisionManager = new CollisionManager(m_player->getWeapon());
+        m_collisionManager->subscribe(m_enemy.get());
+        m_collisionManager->subscribe(m_enemy0.get());
     }
 
     void PlayState::setupWorld()
@@ -62,7 +66,54 @@ namespace core
 
     void PlayState::update(float deltaTime)
     {
-        State::update(deltaTime);
+        sf::Event _event;
+        while (window.pollEvent(_event))
+        {
+            switch (_event.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::KeyPressed:
+                if (_event.type == sf::Event::KeyPressed)
+                {
+                    if (_event.key.code == sf::Keyboard::Escape)
+                    {
+                        window.close();
+                    }
+
+                    if (_event.key.code == sf::Keyboard::F11)
+                    {
+                        if (!m_isFullscreen)
+                        {
+                            window.create(sf::VideoMode::getDesktopMode(), "title", sf::Style::Fullscreen);
+                        }
+                        else
+                        {
+                            window.create(sf::VideoMode::getDesktopMode(), "title", sf::Style::Default);
+                        }
+
+                        m_isFullscreen = !m_isFullscreen;
+                    }
+
+                    if (_event.key.code == sf::Keyboard::Space)
+                    {
+                        m_hasPlayerAttacked = true;
+                        m_playerAttackCount = (m_playerAttackCount + 1) % 4;
+                    }
+                }
+                break;
+
+            case sf::Event::MouseButtonPressed:
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                log_info("%d %d", mousePos.x, mousePos.y);
+                m_hasPlayerAttacked = true;
+
+                break;
+            }
+        }
+
         m_world->Step(timeStep, velocityIterations, positionIterations);
 
         if (m_hasPlayerAttacked)
@@ -70,6 +121,7 @@ namespace core
             m_player->p_isAttacking = true;
             m_hasPlayerAttacked = false;
             m_player->p_attackCount = m_playerAttackCount;
+            m_collisionManager->collide();
         }
 
         m_player->update(deltaTime);

@@ -8,7 +8,9 @@ namespace core
         m_isFacingRight(true), 
         m_animInfo(entityInfo.animInfo), 
         p_isAttacking(false), 
-        p_attackCount(0)
+        p_attackCount(0),
+        m_hasTakenDamage(false),
+        m_damageSwitchTime(.0f)
     {
         createBody(world, entityInfo.pos.x, entityInfo.pos.y, dimension);
         m_offset = (dimension == LARGE_DIMENSION) ? LARGE_DIMENSION : 0;
@@ -78,5 +80,16 @@ namespace core
         m_sprite.setTextureRect(textureRect);
 
         lastPosition = m_sprite.getPosition().x;
+    
+        if (m_hasTakenDamage)
+        {
+            m_damageSwitchTime += deltaTime;
+            if (m_damageSwitchTime >= 0.3f)
+            {
+                m_sprite.setColor(sf::Color::White);
+                m_hasTakenDamage = false;
+                m_damageSwitchTime = 0.0f;
+            }
+        }
     }
 }

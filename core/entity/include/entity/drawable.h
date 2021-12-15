@@ -33,6 +33,7 @@ namespace core
 		virtual void draw(sf::RenderWindow& window);
 
 		sf::FloatRect getOutlineBounds() { return m_sprite.getGlobalBounds(); }
+		void setColor(sf::Color color) { m_sprite.setColor(color); }
 
 		/// <summary>
 		/// Pure abstract method, updates the object's fields

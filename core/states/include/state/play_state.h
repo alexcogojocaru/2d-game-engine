@@ -3,6 +3,7 @@
 #include <gameui/gameui.h>
 #include <entity/player.h>
 #include <entity/enemy.h>
+#include <entity/collision_manager.h>
 #include <items/collider.h>
 #include <box2d/box2d.h>
 #include <gamemap/map.h>
@@ -27,6 +28,7 @@ namespace core
         std::shared_ptr<Item>       m_item;
         map::Map*                   map;
         sf::VertexArray             quad;
+        CollisionManager*            m_collisionManager;
 
         float timeStep = 1.0f / 60.0f;
         int32 velocityIterations = 6;

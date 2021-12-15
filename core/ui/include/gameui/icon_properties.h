@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <map>
 
 /// <summary>
 /// Namespace that contains the implementation for the core game
@@ -9,6 +10,7 @@ namespace core
 {
 	namespace constants
 	{
+#define ICON_NUMBER_ONE_X 1
 		const sf::Vector2f ICON_NUMBER_ONE				= sf::Vector2f(1, 0);
 		const sf::Vector2f ICON_NUMBER_TWO				= sf::Vector2f(2, 0);
 		const sf::Vector2f ICON_NUMBER_THREE			= sf::Vector2f(3, 0);
