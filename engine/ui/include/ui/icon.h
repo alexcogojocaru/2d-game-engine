@@ -19,6 +19,9 @@ namespace engine
 		private:
 			sf::Sprite* m_sprite;
 			sf::RectangleShape m_outline;
+			int8_t width;
+			int8_t height;
+			int8_t tiledimension;
 
 			float m_scaleFactor;
 
@@ -39,6 +42,8 @@ namespace engine
 			float getScaleFactor() const { return m_scaleFactor; }
 
 			void draw(sf::RenderWindow& window) override;
+
+			void setSprite(sf::Vector2f spritePos);
 		};
 	}
 }

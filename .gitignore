@@ -12,3 +12,7 @@ engine/engine
 *.png
 demo
 *.ttf
+src/
+lib/
+include/
+CppProperties.json

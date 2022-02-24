@@ -21,6 +21,7 @@ namespace core
 		void setPosition(float x, float y);
 		void setOrigin(float x, float y);
 		void rotate(float angle);
+
 		sf::Vector2f getSize() const { return sf::Vector2f(m_sprite.getTextureRect().width, m_sprite.getTextureRect().height); }
 
 		virtual void update(float deltaTime);

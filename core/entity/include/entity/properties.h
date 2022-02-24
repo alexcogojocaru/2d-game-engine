@@ -22,6 +22,7 @@ namespace core
     {
         float health;
         float attackDamage;
+        float speed;
     };
 
     /// <summary>
@@ -48,6 +49,14 @@ namespace core
         {
             return !this->operator==(op);
         }
+    };
+
+    enum class Gender { MALE, FEMALE };
+
+    struct gender_anim_info
+    {
+        Gender gender;
+        _frame_info info;
     };
 
     struct animation_info

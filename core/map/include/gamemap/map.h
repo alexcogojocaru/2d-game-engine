@@ -1,5 +1,6 @@
 #pragma once
 
+#include <resources_pool/texture_manager.h>
 #include "seed_generator.h"
 #include "wall.h"
 
@@ -10,12 +11,26 @@ namespace core
 {
 	namespace map
 	{
+		struct chest_powerup
+		{
+			sf::Vector2f position;
+			std::string power;
+		};
+
 		class Map
 		{
 		private:
 			std::vector<Wall> m_walls;
 			seed_info m_seedInfo;
 			b2World world;
+			sf::VertexArray vertices;
+			sf::Texture* texture;
+			std::vector<sf::Vector2f> terrainPositions;
+
+		public:
+			std::vector<chest_powerup> chestPositions;
+			unsigned int MAP_WIDTH;
+			unsigned int MAP_HEIGHT;
 
 		public:
 			Map();
@@ -25,6 +40,8 @@ namespace core
 
 			void update();
 			void draw(sf::RenderWindow& window);
+
+			sf::Vector2f& getSpawnPosition(float widthMax, float heightMax);
 		};
 	}
 }

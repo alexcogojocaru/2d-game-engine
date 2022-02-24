@@ -10,8 +10,9 @@ namespace core
 
 	}
 
-	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture, float scale_factor)
-		: m_position(startPos)
+	Word::Word(std::vector<sf::Vector2f>& letterCodes, sf::Vector2f& startPos, const sf::Texture& texture, float scale_factor) : 
+		m_position(startPos),
+		m_isSelected(false)
 	{
 		float xPosition = startPos.x;
 		float yPosition = startPos.y;
@@ -35,9 +36,24 @@ namespace core
 
 	}
 
-	void Word::update(bool move)
+	void Word::deselect()
 	{
+		m_isSelected = false;
+		for (auto& letter : m_letters)
+		{
+			letter.setScaleFactor(3.0);
+		}
+	}
 
+	void Word::update(float deltaTime)
+	{
+		if (m_isSelected)
+		{
+			for (auto& letter : m_letters)
+			{
+				letter.setScaleFactor(4);
+			}
+		}
 	}
 
 	void Word::draw(sf::RenderWindow& window)

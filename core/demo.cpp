@@ -19,22 +19,34 @@ namespace texp = core::texture_properties;
 int main()
 {
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "SFML Window");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(144);
 
-    /*sf::View playerView(sf::Vector2f(0, 0), sf::Vector2f(1920, 1080));
-    window.setView(playerView);*/
+    sf::View playerView(sf::Vector2f(1920 / 2, 1080 / 2), sf::Vector2f(1920, 1080));
+    window.setView(playerView);
 
     srand((unsigned int)time(NULL));
 
     std::map<std::string, std::string> textures = { 
-        { texp::HEALTH_TEXTURE,  texp::HEALTH_TEXTURE_PATH }, 
-        { texp::ICON_TEXTURE,    texp::ICON_TEXTURE_PATH }, 
-        { texp::SPRITE_TEXTURE,  texp::SPRITE_TEXTURE_PATH },
-        { texp::MENU_BACKGROUND_TEXTURE, texp::MENU_STATE_BACKGROUND_PATH }
+        { 
+            texp::HEALTH_TEXTURE,  
+            texp::HEALTH_TEXTURE_PATH 
+        }, 
+        { 
+            texp::ICON_TEXTURE,    
+            texp::ICON_TEXTURE_PATH 
+        }, 
+        { 
+            texp::SPRITE_TEXTURE,  
+            texp::SPRITE_TEXTURE_PATH 
+        },
+        { 
+            texp::MENU_BACKGROUND_TEXTURE, 
+            texp::MENU_STATE_BACKGROUND_PATH 
+        }
     };
 
-    std::shared_ptr<TextureManager> textureManager = TextureManager::getInstance(textures);
-    std::shared_ptr<State> state = std::make_shared<MenuState>(window, window.getSize().x, window.getSize().y);
+    std::shared_ptr<TextureManager> textureManager  = TextureManager::getInstance(textures);
+    std::shared_ptr<State> state                    = std::make_shared<PlayState>(window, window.getSize().x, window.getSize().y);
 
     sf::Clock clock;
     float deltaTime;
@@ -43,7 +55,7 @@ int main()
     { 
         deltaTime = clock.restart().asSeconds();
 
-        window.clear();
+        window.clear(sf::Color(39, 45, 56));
 
         state->update(deltaTime);
         state->draw();

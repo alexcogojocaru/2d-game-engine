@@ -48,5 +48,13 @@ namespace core
         /// </summary>
         /// <param name="frameInfo">the new animation frame info</param>
         void changeAnimation(_frame_info frameInfo);
+
+        /// <summary>
+        /// Changes the idle animation, in case the character changes mid game or in selection screen
+        /// </summary>
+        /// <param name="idleInfo"></param>
+        void changeIdleAnimation(_frame_info idleInfo) { m_animInfo.idleInfo = idleInfo; }
+
+        animation_info getAnimInfo() const { return m_animInfo; }
     };
 }

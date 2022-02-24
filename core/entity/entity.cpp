@@ -5,15 +5,19 @@ namespace core
 {
     Entity::Entity(b2World& world, entity_info entityInfo, const sf::Texture& texture, float dimension) : 
         Drawable(texture), 
+        m_damageSwitchTime(0.3f),
+        m_damageTotalTime(0.0f),
         m_isFacingRight(true), 
         m_animInfo(entityInfo.animInfo), 
         p_isAttacking(false), 
-        p_attackCount(0)
+        p_attackCount(0),
+        isDead(false)
     {
         createBody(world, entityInfo.pos.x, entityInfo.pos.y, dimension);
         m_offset = (dimension == LARGE_DIMENSION) ? LARGE_DIMENSION : 0;
 
-        stats = { 100.0f, 10.0f };
+        stats = { 100.0f, 250.0f, 8000 };
+        stats.health = 100.0f;
 
         m_outline = sf::RectangleShape(sf::Vector2f(dimension * SCALE_FACTOR, dimension * SCALE_FACTOR));
 		m_outline.setFillColor(sf::Color(0, 0, 0, 0));
@@ -23,6 +27,9 @@ namespace core
 
         m_animationFrameOffset = (dimension == LARGE_DIMENSION) ? 2 : 1;
         m_animInfo = entityInfo.animInfo;
+
+        const sf::Texture& healthTexture = TextureManager::getInstance()->getTexture(texp::HEALTH_TEXTURE);
+        m_healthBar = HealthBar::getInstance(healthTexture, 100.0f, 6);
     }
 
     Entity::~Entity()
@@ -73,10 +80,46 @@ namespace core
         m_animation.update(deltaTime, m_animationFrameOffset);
         
         sf::IntRect textureRect = m_animation.getTextureBox();
-        textureRect.width   *= (m_isFacingRight) ? 1 : -1;
-        textureRect.left    += (m_isFacingRight) ? 0 : m_animInfo.dimension;
+        textureRect.width       *= (m_isFacingRight) ? 1 : -1;
+        textureRect.left        += (m_isFacingRight) ? 0 : m_animInfo.dimension;
+        
         m_sprite.setTextureRect(textureRect);
-
         lastPosition = m_sprite.getPosition().x;
+
+        if (attacked)
+        {
+            if (m_damageTotalTime == 0.0f)
+            {
+                m_sprite.setColor(sf::Color::Red);
+            }
+
+            m_damageTotalTime += deltaTime;
+            if (m_damageTotalTime >= m_damageSwitchTime)
+            {
+                m_damageTotalTime = 0.0f;
+                m_sprite.setColor(sf::Color::White);
+                attacked = false;
+            }
+        }
+    }
+
+    void Entity::draw(sf::RenderWindow& window)
+    {
+        window.draw(m_sprite);
+#ifdef DEBUG
+        window.draw(m_outline);
+#endif
+    }
+
+    void Entity::takeDamage(float deltaTime, float damage)
+    {
+        attacked = true;
+        stats.health -= damage * deltaTime;
+
+        if (stats.health <= 0.0f)
+        {
+            isDead = true;
+            m_body->SetTransform(b2Vec2(200 * 64, 200 * 64), 0);
+        }
     }
 }

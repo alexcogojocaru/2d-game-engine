@@ -6,7 +6,7 @@ namespace core
 	Item::Item(b2World& world, const sf::Texture& texture, const sf::Vector2f texturePos) : 
 		Drawable(texture)
 	{
-		float scale = 3;
+		float scale = 2;
 
 		m_sprite.setTextureRect(sf::IntRect(texturePos.x * 16, texturePos.y * 16, 16, 32));
 		m_sprite.setPosition(200, 300);

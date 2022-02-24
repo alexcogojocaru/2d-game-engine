@@ -50,5 +50,6 @@ namespace core
 		const sf::Vector2f PUNCTUATION_EXCLAMATION_MARK = sf::Vector2f(13, 3);
 		const sf::Vector2f PUNCTUATION_QUSTION_MARK		= sf::Vector2f(15, 3);
 		const sf::Vector2f PUNCTUATION_DOT				= sf::Vector2f(11, 4);
+		const sf::Vector2f PUNCTUATION_SLASH			= sf::Vector2f(13, 4);
 	}
 }

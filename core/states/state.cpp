@@ -51,6 +51,11 @@ namespace core
                         m_hasPlayerAttacked = true;
                         m_playerAttackCount = (m_playerAttackCount + 1) % 4;
                     }
+
+                    if (_event.key.code == sf::Keyboard::Enter)
+                    {
+                        changeState = true;
+                    }
                 }
                 break;
 

@@ -2,8 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#define SCALE_FACTOR 4
-#define DEBUG
+#define SCALE_FACTOR 3
+//#define DEBUG
 
 /// <summary>
 /// Namespace that contains the implementation for the core game
@@ -32,7 +32,17 @@ namespace core
 		/// <param name="window">a valid window reference</param>
 		virtual void draw(sf::RenderWindow& window);
 
+		/// <summary>
+		/// Gets the bounds of the sprite, used for collision detection
+		/// </summary>
+		/// <returns></returns>
 		sf::FloatRect getOutlineBounds() { return m_sprite.getGlobalBounds(); }
+		 
+		/// <summary>
+		/// Scales the object on the screen
+		/// </summary>
+		/// <param name="factor"></param>
+		void scale(float factor) { m_sprite.scale(sf::Vector2f(factor, factor)); }
 
 		/// <summary>
 		/// Pure abstract method, updates the object's fields

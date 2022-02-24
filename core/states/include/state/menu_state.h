@@ -9,6 +9,7 @@ namespace core
 	{
 	private:
 		sf::Sprite m_background;
+		int currentWord;
 
 	public:
 		MenuState(sf::RenderWindow& window, uint32_t width, uint32_t height);

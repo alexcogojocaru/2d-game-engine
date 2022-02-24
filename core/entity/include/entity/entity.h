@@ -14,6 +14,7 @@
 
 using namespace engine::resources;
 using namespace core::constants;
+namespace texp = core::texture_properties;
 
 /// <summary>
 /// Namespace that contains the implementation for the core game
@@ -28,17 +29,25 @@ namespace core
     protected:
         sf::Vector2f                    m_texturePos;           // the texture position in the sprite sheet
         Animation                       m_animation;            // animation object for sprite transition
-        b2Body*                         m_body;                 // box2d body for collision
+        
         entity_stats                    stats;                  // entity's stats and properties
         animation_info                  m_animInfo;             // animation info with the entity's state
         float                           m_animationFrameOffset; // animation frame offset (how many position to skip in the sprite sheet)
         bool                            m_isFacingRight;        // the direction of the entity
         float                           lastPosition;
         float                           m_offset;
+        std::shared_ptr<HealthBar>      m_healthBar;
+        float m_damageSwitchTime;
+        float m_damageTotalTime;
+        bool attacked;
 
     public:
+        float                           xOffset;
+        float                           yOffset;
         bool                            p_isAttacking;
         uint32_t                        p_attackCount;
+        bool isDead;
+        b2Body* m_body;                 // box2d body for collision
 
     private:
         /// <summary>
@@ -73,11 +82,20 @@ namespace core
         /// </summary>
         /// <param name="deltaTime">the game loop delta time</param>
         void update(float deltaTime) override;
+        void draw(sf::RenderWindow& window) override;
 
         /// <summary>
         /// Changes the entity's direction to left or right based on the argument provided
         /// </summary>
         /// <param name="right">the direction is facing</param>
         void setDirectionToRight(bool right) { m_isFacingRight = right; }
+
+        b2Vec2 getPosition() const { return m_body->GetPosition(); }
+
+        /// <summary>
+        /// Used for decreasing the entity's health
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        void takeDamage(float deltaTime, float damage);
     };
 }

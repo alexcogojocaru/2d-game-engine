@@ -25,12 +25,15 @@ namespace core
         Entity::update(deltaTime);
 
         engine::input::_directions moveVector = engine::input::KeyboardInput::handleInput();
-        m_body->SetLinearVelocity(b2Vec2(moveVector.x_ * MOVE_SPEED * deltaTime, moveVector.y_ * MOVE_SPEED * deltaTime));
+        m_body->SetLinearVelocity(b2Vec2(moveVector.x_ * stats.speed * deltaTime, moveVector.y_ * stats.speed * deltaTime));
+
+        xOffset = moveVector.x_;
+        yOffset = moveVector.y_;
 
         Entity::animationUpdate(deltaTime);
 
         attack(deltaTime);
-        m_weapon->setPosition(m_body->GetPosition().x + 32, m_body->GetPosition().y + 48);
+        m_weapon->setPosition(m_body->GetPosition().x + 32, m_body->GetPosition().y + 32);
     }
 
     void Player::attack(float deltaTime)
@@ -41,12 +44,19 @@ namespace core
             m_weapon->rotate(5);
             m_numberOfRotations += 5;
 
-            if (m_testEnemy)
+            if (enemies)
             {
-                bool hasCollided = m_collider->checkCollision(m_testEnemy.get());
-                if (hasCollided)
+                for (auto& enemy : *enemies)
                 {
-                    printf("collision\n");
+                    bool hasCollided = m_collider->checkCollision(enemy.get());
+                    if (hasCollided)
+                    {
+                        enemy->takeDamage(deltaTime, stats.attackDamage);
+                        if (enemy->isDead)
+                        {
+                            enemiesKilled++;
+                        }
+                    }
                 }
             }
 
@@ -63,6 +73,6 @@ namespace core
     {
         Drawable::draw(window);
         m_weapon->draw(window);
-        //window.draw(m_light);
+        //m_healthBar->draw(window);
     }
 }

@@ -2,20 +2,25 @@
 #include <gamemap/seed_generator.h>
 #include "include/state/play_state.h"
 
+#define NUMBER_OF_MONSTERS 100
+#define TARGET_ENEMIES_KILLED 20
+
 namespace core
 {
-    PlayState::PlayState(sf::RenderWindow& window, uint32_t width, uint32_t height)
-        : State(window, width, height)
+    PlayState::PlayState(sf::RenderWindow& window, uint32_t width, uint32_t height, frame_compact animInfo) :
+        State(window, width, height),
+        enemiesKilled(0)
     {
         const sf::Texture& healthTexture    = textureManager->getTexture(texp::HEALTH_TEXTURE);
-        const sf::Texture& texture          = textureManager->getTexture("texture");
+        const sf::Texture& texture          = textureManager->getTexture(texp::SPRITE_TEXTURE);
+        const sf::Texture& iconTexture      = textureManager->getTexture(texp::ICON_TEXTURE);
 
-        m_healthBar = HealthBar::getInstance(healthTexture, 100.0f, 4);
         setupWorld();
 
         animation_info playerAnimInfo;
-        playerAnimInfo.idleInfo     = MALE_DINO_IDLE;
-        playerAnimInfo.runningInfo  = MALE_DINO_RUNNING;
+        playerAnimInfo.idleInfo     = animInfo.idle;
+        playerAnimInfo.runningInfo  = animInfo.running;
+
         playerAnimInfo.dimension    = MEDIUM_DIMENSION;
 
         animation_info ogreAnimInfo;
@@ -28,30 +33,67 @@ namespace core
         undeadAnimInfo.runningInfo  = UNDEAD_MONSTER_RUNNING;
         undeadAnimInfo.dimension    = LARGE_DIMENSION;
 
-        entity_info ogreInfo    = { ogreAnimInfo, sf::Vector2f(1000, 400) };
-        entity_info undeadInfo  = { undeadAnimInfo, sf::Vector2f(700, 500) };
-        entity_info playerInfo  = { playerAnimInfo, sf::Vector2f(300, 400) };
+        animation_info demonAnimInfo;
+        demonAnimInfo.idleInfo = DEMON_MONSTER_IDLE;
+        demonAnimInfo.runningInfo = DEMON_MONSTER_RUNNING;
+        demonAnimInfo.dimension = LARGE_DIMENSION;
 
+        map = new map::Map(*m_world, "w20h10", sf::Vector2f(0, 0));
+
+        sf::Vector2f& playerPos = map->getSpawnPosition(map->MAP_WIDTH, map->MAP_HEIGHT);
+        playerPos.x *= 64;
+        playerPos.y *= 64;
+
+        entity_info playerInfo  = { playerAnimInfo, playerPos };
         m_player    = std::make_shared<Player>(*m_world, playerInfo, texture);
-        m_enemy     = std::make_shared<Enemy>(*m_world, ogreInfo, texture, LARGE_DIMENSION);
-        m_enemy0    = std::make_shared<Enemy>(*m_world, undeadInfo, texture, LARGE_DIMENSION);
+
+        sf::View view = window.getView();
+        sf::Vector2f center = view.getCenter();
+        b2Vec2 playerPosition = m_player->getPosition();
+
+        view.move(sf::Vector2f(playerPosition.x - 1920 / 2, playerPosition.y - 1080 / 2));
+        window.setView(view);
+
+        entity_info ogreInfo    = { ogreAnimInfo,   sf::Vector2f(1000, 400) };
+        entity_info undeadInfo  = { undeadAnimInfo, sf::Vector2f(700, 500)  };
+        entity_info demonInfo   = { demonAnimInfo,  sf::Vector2f(700, 900)  };
+
+        m_enemies.push_back(std::make_shared<Enemy>(*m_world, ogreInfo, texture, LARGE_DIMENSION));
+        m_enemies.push_back(std::make_shared<Enemy>(*m_world, undeadInfo, texture, LARGE_DIMENSION));
+        m_enemies.push_back(std::make_shared<Enemy>(*m_world, demonInfo, texture, LARGE_DIMENSION));
+
+        for (int i = 0; i < NUMBER_OF_MONSTERS; i++)
+        {
+            int monsterType = rand() % 3;
+            entity_info monsterInfo;
+            monsterInfo.pos = map->getSpawnPosition(map->MAP_WIDTH, map->MAP_HEIGHT);
+            monsterInfo.pos.x *= 64;
+            monsterInfo.pos.y *= 64;
+
+            monsterInfo.animInfo = (monsterType == 0) ? ogreAnimInfo : ((monsterType == 1) ? undeadAnimInfo : demonAnimInfo);
+
+            m_enemies.push_back(std::make_shared<Enemy>(*m_world, monsterInfo, texture, LARGE_DIMENSION));
+        }
 
         std::string seed = map::SeedGenerator::generate();
 
-        float startX = 1;
-        float startY = 1;
+        dynamic_cast<Player&>(*m_player).setEnemiesData(&m_enemies);
 
-        map = new map::Map(*m_world, "w20h10", sf::Vector2f(startX, startY));
-        map::seed_info mapSeedInfo = map->getSeedInfo();
+        numbers = { ICON_NUMBER_ZERO, ICON_NUMBER_ONE, ICON_NUMBER_TWO, ICON_NUMBER_THREE, ICON_NUMBER_FOUR, ICON_NUMBER_FIVE, ICON_NUMBER_SIX, ICON_NUMBER_SEVEN, ICON_NUMBER_EIGHT, ICON_NUMBER_NINE };
+        std::vector<sf::Vector2f> letters = { ICON_NUMBER_ZERO, ICON_NUMBER_ZERO };
+        counter.push_back(Icon(iconTexture, ICON_NUMBER_ZERO));
+        counter.push_back(Icon(iconTexture, ICON_NUMBER_ZERO));
+        counter.push_back(Icon(iconTexture, PUNCTUATION_SLASH));
+        counter.push_back(Icon(iconTexture, numbers[TARGET_ENEMIES_KILLED / 10 % 10]));
+        counter.push_back(Icon(iconTexture, numbers[TARGET_ENEMIES_KILLED % 10]));
 
-        //startX += 4;
-        startX = startX + mapSeedInfo.width + 2;
-        //startY = startY + mapSeedInfo.height + 3;
+        counter[0].setPosition(playerPosition.x - center.x, playerPosition.y - center.y);
+        counter[1].setPosition(playerPosition.x - center.x + 40, playerPosition.y - center.y);
+        counter[2].setPosition(playerPosition.x - center.x + 40 * 2, playerPosition.y - center.y);
+        counter[3].setPosition(playerPosition.x - center.x + 40 * 3, playerPosition.y - center.y);
+        counter[4].setPosition(playerPosition.x - center.x + 40 * 4, playerPosition.y - center.y);
 
-        seed = map::SeedGenerator::generate();
-        //map1 = new map::Map(*m_world, seed, sf::Vector2f(startX, startY));
-
-        dynamic_cast<Player&>(*m_player).setEnemyDebug(m_enemy0);
+        m_initialViewCenter = window.getView().getCenter();
     }
 
     void PlayState::setupWorld()
@@ -62,7 +104,54 @@ namespace core
 
     void PlayState::update(float deltaTime)
     {
-        State::update(deltaTime);
+        sf::Event _event;
+        while (window.pollEvent(_event))
+        {
+            switch (_event.type)
+            {
+            case sf::Event::Closed:
+                window.close();
+                break;
+
+            case sf::Event::KeyPressed:
+                if (_event.type == sf::Event::KeyPressed)
+                {
+                    if (_event.key.code == sf::Keyboard::Escape)
+                    {
+                        window.close();
+                    }
+
+                    if (_event.key.code == sf::Keyboard::F11)
+                    {
+                        if (!m_isFullscreen)
+                        {
+                            window.create(sf::VideoMode::getDesktopMode(), "title", sf::Style::Fullscreen);
+                        }
+                        else
+                        {
+                            window.create(sf::VideoMode::getDesktopMode(), "title", sf::Style::Default);
+                        }
+
+                        m_isFullscreen = !m_isFullscreen;
+                    }
+
+                    if (_event.key.code == sf::Keyboard::Space)
+                    {
+                        m_hasPlayerAttacked = true;
+                        m_playerAttackCount = (m_playerAttackCount + 1) % 4;
+                    }
+                }
+                break;
+
+            case sf::Event::MouseButtonPressed:
+                sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+                log_info("%d %d", mousePos.x, mousePos.y);
+                m_hasPlayerAttacked = true;
+                m_playerAttackCount = (m_playerAttackCount + 1) % 4;
+                break;
+            }
+        }
+
         m_world->Step(timeStep, velocityIterations, positionIterations);
 
         if (m_hasPlayerAttacked)
@@ -72,20 +161,64 @@ namespace core
             m_player->p_attackCount = m_playerAttackCount;
         }
 
+        sf::View view = window.getView();
+        sf::Vector2f center = view.getCenter();
+        b2Vec2 playerPosition = m_player->getPosition();
+
+        float xOffsetPlayer = m_player->xOffset * deltaTime * 100;
+        float yOffsetPlayer = m_player->yOffset * deltaTime * 100;
+
+        bool isOutOfBounds_Horizontal = (center.x - (float)sf::VideoMode::getDesktopMode().width / 2) < 0.0f;
+        float xOffset = (isOutOfBounds_Horizontal) ? 0.0f : xOffsetPlayer;
+
+        bool isOutOfBounds_Vertical = (center.y - (float)sf::VideoMode::getDesktopMode().height / 2) < 0.0f;
+        float yOffset = (isOutOfBounds_Vertical) ? 0.0f : yOffsetPlayer;
+
+        xOffset = (xOffset == 0.0f && xOffsetPlayer > 0.0f) ? xOffsetPlayer : xOffset;
+        yOffset = (yOffset == 0.0f && yOffsetPlayer > 0.0f) ? yOffsetPlayer : yOffset;
+
+        view.move(xOffset, yOffset);
+        window.setView(view);
+
+        counter[0].setPosition(xOffset + counter[0].getPosition().x, yOffset + counter[0].getPosition().y);
+        counter[1].setPosition(xOffset + counter[1].getPosition().x, yOffset + counter[1].getPosition().y);
+        counter[2].setPosition(xOffset + counter[2].getPosition().x, yOffset + counter[2].getPosition().y);
+        counter[3].setPosition(xOffset + counter[3].getPosition().x, yOffset + counter[3].getPosition().y);
+        counter[4].setPosition(xOffset + counter[4].getPosition().x, yOffset + counter[4].getPosition().y);
+
+        int firstPos = dynamic_cast<Player&>(*m_player).enemiesKilled / 10;
+        int secondPos = dynamic_cast<Player&>(*m_player).enemiesKilled % 10;
+
+        counter[0].setSprite(numbers[firstPos]);
+        counter[1].setSprite(numbers[secondPos]);
+
         m_player->update(deltaTime);
-        m_enemy->update(deltaTime);
-        m_enemy0->update(deltaTime);
+        for (auto& enemy : m_enemies)
+        {
+            enemy->update(deltaTime);
+        }
         map->update();
-        //map1->update();
+
+        if (dynamic_cast<Player&>(*m_player).enemiesKilled == TARGET_ENEMIES_KILLED)
+        {
+            changeState = true;
+        }
     }
 
     void PlayState::draw()
     {
-        m_player->draw(window);
-        m_enemy->draw(window);
-        m_enemy0->draw(window);
-        m_healthBar->draw(window);
         map->draw(window);
-        //map1->draw(window);
+
+        m_player->draw(window);
+
+        for (auto& enemy : m_enemies)
+        {
+            enemy->draw(window);
+        }
+
+        for (auto& icon : counter)
+        {
+            icon.draw(window);
+        }
     }
 }

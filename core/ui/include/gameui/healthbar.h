@@ -25,9 +25,11 @@ namespace core
 		float m_totalHealth;
 
 	public:
-		HealthBar(const sf::Texture& healthBarTexture, float totalHealth, int8_t numberOfHearts);
+		HealthBar(const sf::Texture& healthBarTexture, float totalHealth, int8_t numberOfHearts, float scaleFactor=3.0f);
 
 		static std::shared_ptr<HealthBar> getInstance(const sf::Texture& healthBarTexture, float totalHealth, int8_t numberOfHearts);
 		void draw(sf::RenderWindow& window) override;
+
+		void changePosition(sf::Vector2f pos);
 	};
 }

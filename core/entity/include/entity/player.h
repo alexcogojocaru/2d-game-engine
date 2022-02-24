@@ -25,6 +25,10 @@ namespace core
         float                       m_attackTotalTime;
         uint32_t                    m_numberOfRotations;
         std::shared_ptr<Entity>     m_testEnemy;
+        std::vector<std::shared_ptr<Entity>>* enemies;
+
+    public:
+        unsigned enemiesKilled = 0;
 
     public:
         /// <summary>
@@ -52,5 +56,11 @@ namespace core
         void attack(float deltaTime);
 
         void draw(sf::RenderWindow& window) override;
+    
+        /// <summary>
+        /// Sets the address for all the enemies in the play state
+        /// </summary>
+        /// <param name="enemies"></param>
+        void setEnemiesData(std::vector<std::shared_ptr<Entity>>* enemies) { this->enemies = enemies; }
     };
 }

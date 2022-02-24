@@ -4,8 +4,11 @@ namespace engine
 {
 	namespace ui
 	{
-		Icon::Icon(const sf::Texture& texture, int8_t x, int8_t y, int8_t width, int8_t height, int8_t tiledimension, float scaleFactor)
-			: m_scaleFactor(scaleFactor)
+		Icon::Icon(const sf::Texture& texture, int8_t x, int8_t y, int8_t width, int8_t height, int8_t tiledimension, float scaleFactor) : 
+			m_scaleFactor(scaleFactor),
+			width(width),
+			height(height),
+			tiledimension(tiledimension)
 		{
 			sf::IntRect rect(x * tiledimension, y * tiledimension, width, height);
 			m_sprite = new sf::Sprite(texture, rect);
@@ -52,6 +55,12 @@ namespace engine
 		{
 			m_sprite->setPosition(x, y);
 			m_outline.setPosition(x, y);
+		}
+
+		void Icon::setSprite(sf::Vector2f spritePos)
+		{
+			sf::IntRect rect(spritePos.x * tiledimension, spritePos.y * tiledimension, width, height);
+			m_sprite->setTextureRect(rect);
 		}
 
 		void Icon::draw(sf::RenderWindow& window)

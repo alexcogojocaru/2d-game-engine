@@ -5,3 +5,5 @@ project ("sfml-2d")
 add_subdirectory (src)
 add_subdirectory (engine)
 add_subdirectory (core)
+
+add_subdirectory(testbed)
